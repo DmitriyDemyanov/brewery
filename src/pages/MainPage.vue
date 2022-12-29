@@ -1,21 +1,28 @@
 <template>
   <div>
     <NavigationBrewery />
+    <div class="d-flex justify-content-between">
 
-    <div class="wrapper-brewery">
-      <BreweryListItem :brewery="brewery" v-for="(brewery, index) in getBreweriesList" :key="index"/>
+      <div class="wrapper-brewery">
+        <BreweryListItem
+          :brewery="brewery"
+          v-for="(brewery, index) in getBreweriesList"
+          :key="index"
+        />
+      </div>
+
+      <div class="wrapper-details">
+        <BreweryDetails :breweryDetails="getDetailsBrewery"/>
+      </div>
+
     </div>
-
-    <div class="wrapper-brewery-details"></div>
-
-
   </div>
 </template>
 
 <script>
-
 import NavigationBrewery from '@/components/NavigationBrewery';
 import BreweryListItem from '@/components/BreweryListItem';
+import BreweryDetails from '@/components/BreweryDetails';
 
 import { mapActions, mapGetters } from 'vuex';
 export default {
@@ -23,9 +30,10 @@ export default {
   components: {
     NavigationBrewery,
     BreweryListItem,
+    BreweryDetails,
   },
   computed: {
-    ...mapGetters('breweries', ['getBreweriesList']),
+    ...mapGetters('breweries', ['getBreweriesList','getDetailsBrewery']),
   },
   methods: {
     ...mapActions('breweries', ['fetchBreweriesList']),
@@ -33,14 +41,14 @@ export default {
   mounted() {
     this.fetchBreweriesList();
   },
-}
+};
 </script>
 
 <style scoped>
 .wrapper-brewery {
   width: calc(50% - 75px);
 }
-.wrapper-brewery-details {
+.wrapper-details {
   width: calc(50% - 75px);
 }
 </style>

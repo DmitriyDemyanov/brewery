@@ -1,6 +1,6 @@
 <template>
   <BContainer>
-    <router-link class="p-2" to="/">Главная</router-link>
+    <router-link class="p-2" to="/"></router-link>
     <router-view class="main-view"></router-view>
   </BContainer>
 </template>

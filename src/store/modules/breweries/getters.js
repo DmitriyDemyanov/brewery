@@ -1,5 +1,8 @@
 export default {
   getBreweriesList(state) {
-    return state.breweriesList
+    return state.breweriesList;
+  },
+  getDetailsBrewery(state) {
+    return state.activeBrewery;
   }
 }
