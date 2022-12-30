@@ -4,5 +4,5 @@ export default {
   },
   SET_ACTIVE_BREWERY(state, payload) {
     state.activeBrewery = payload;
-  }
+  },
 };

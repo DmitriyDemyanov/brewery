@@ -3,16 +3,18 @@
     <NavigationBrewery />
     <div class="d-flex justify-content-between">
 
-      <div class="wrapper-brewery">
-        <BreweryListItem
-          :brewery="brewery"
-          v-for="(brewery, index) in getBreweriesList"
-          :key="index"
-        />
+
+      <div class="wrapper-brewery" v-if="getBreweriesList.length">
+        <BreweryListItem v-for="(brewery, index) in getBreweriesList" :brewery="brewery" :key="index" />
+      </div>
+      <div class="spinner" v-else>
+        <div class="text-center">
+          <b-spinner variant="primary" type="grow"></b-spinner>
+        </div>
       </div>
 
       <div class="wrapper-details">
-        <BreweryDetails :breweryDetails="getDetailsBrewery"/>
+        <BreweryDetails />
       </div>
 
     </div>
@@ -33,7 +35,7 @@ export default {
     BreweryDetails,
   },
   computed: {
-    ...mapGetters('breweries', ['getBreweriesList','getDetailsBrewery']),
+    ...mapGetters('breweries', ['getBreweriesList'])
   },
   methods: {
     ...mapActions('breweries', ['fetchBreweriesList']),
@@ -47,7 +49,10 @@ export default {
 <style scoped>
 .wrapper-brewery {
   width: calc(50% - 75px);
+  max-height: 500px;
+  overflow-y: auto;
 }
+
 .wrapper-details {
   width: calc(50% - 75px);
 }
