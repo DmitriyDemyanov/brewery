@@ -52,7 +52,6 @@ export default {
   width: calc(50% - 75px);
   max-height: 500px;
   overflow-y: auto;
-
 }
 ::-webkit-scrollbar {
     width: 15px;

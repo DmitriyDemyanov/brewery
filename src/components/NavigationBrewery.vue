@@ -3,30 +3,15 @@
     <div class="image-logo"><img src="@/assets/beer.svg" alt="logo" /></div>
     <div class="drop-down">
       <div>
-        <b-dropdown
-          id="dropdown-left"
-          text="Select State"
-          variant="primary"
-          class="m-2"
-        >
-          <b-dropdown-item class="my-class"
-            v-for="(item, index) in getBreweriesList"
-            :key="index"
-            >{{ item.state }}</b-dropdown-item
-          >
+        <b-dropdown id="dropdown-left" text="Select State" variant="primary" class="m-2"
+          :disabled="!getBreweriesList.length">
+          <b-dropdown-item class="my-class" v-for="(item, index) in getBreweriesList" :key="index">{{ item.state
+}}</b-dropdown-item>
         </b-dropdown>
 
-        <b-dropdown
-          id=""
-          text="Select City"
-          variant="primary"
-          class="m-2 my-class"
-        >
-          <b-dropdown-item
-            v-for="(item, index) in getBreweriesList"
-            :key="index"
-            >{{ item.city }}</b-dropdown-item
-          >
+        <b-dropdown id="" text="Select City" variant="primary" class="m-2 my-class"
+          :disabled="!getBreweriesList.length">
+          <b-dropdown-item v-for="(item, index) in getBreweriesList" :key="index">{{ item.city }}</b-dropdown-item>
         </b-dropdown>
       </div>
     </div>
@@ -54,25 +39,27 @@ export default {
     height: 100%;
   }
 }
-#dropdown-right {
-  #__BVID__10__BV_toggle_ {
-    .dropdown-menu.show {
-      height: 200px;
-      overflow-y: auto;
-    }
-  }
-}
-.my-class {
-  & button {
-    &::after{
-      &.dropdown-menu.show{
-        height: 200px;
-        overflow-y: auto;
-      }
-    }
-  }
-}
 
+:deep .dropdown-menu {
+  height: 200px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    border-radius: 3px;
+
+  }
+
+  &::-webkit-scrollbar-track {
+    background: gray;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: darkgoldenrod;
+    border-radius: 3px;
+  }
+}
 </style>
 
 
