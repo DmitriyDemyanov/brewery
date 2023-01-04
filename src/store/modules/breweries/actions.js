@@ -45,4 +45,9 @@ export default {
     commit('SET_ACTIVE_BREWERY', itemBrewery);
     console.log(itemBrewery);
   },
+
+  fetchBreveryBuState({ commit }, state) {
+    const breweryState = state;
+    commit('SET_STATE_BREWERY', breweryState);
+  }
 };

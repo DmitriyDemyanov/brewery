@@ -16,5 +16,9 @@ export default {
     return arrayState
       .filter((item, pos) => arrayState.indexOf(item) === pos)
       .sort();
+  },
+  getStatesByState(state) {
+    const filterState = state.breweriesList.filter(item => item.state === state.breweriesOnState);
+    return filterState;
   }
 }

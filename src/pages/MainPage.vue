@@ -1,11 +1,12 @@
 <template>
   <div>
     <NavigationBrewery />
+    <div>{{ getStatesByState }}</div>
     <div class="d-flex justify-content-between">
 
 
       <div class="wrapper-brewery" v-if="getBreweriesList.length">
-        <BreweryListItem v-for="(brewery, index) in getBreweriesList" :brewery="brewery" :key="index" />
+        <BreweryListItem v-for="(brewery, index) in getBreweriesList" :brewery="brewery" :key="index"  />
       </div>
       <div class="spinner" v-else>
         <div class="text-center">
@@ -35,7 +36,7 @@ export default {
     BreweryDetails,
   },
   computed: {
-    ...mapGetters('breweries', ['getBreweriesList'])
+    ...mapGetters('breweries', ['getBreweriesList','getStatesByState'])
   },
   methods: {
     ...mapActions('breweries', ['fetchBreweriesList']),

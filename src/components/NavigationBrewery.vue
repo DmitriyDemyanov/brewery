@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'NavigationBrewery',
@@ -38,13 +38,15 @@ export default {
   computed: {
     ...mapGetters('breweries', ['getCitiesList', 'getStatesList']),
     cityText() {
-      return this.city || 'Select City'
+
+      return this.city || 'Select City';
     },
     stateText() {
-      return this.state || 'Select state'
+      return this.state || 'Select state';
     }
   },
   methods: {
+    ...mapActions('breweries',['fetchBreveryBuState']),
     setCityFilter(city) {
       console.log(city);
       this.city = city;
@@ -52,6 +54,7 @@ export default {
     setStateFilter(state) {
       console.log(state);
       this.state = state;
+      this.fetchBreveryBuState(state);
     },
 
 
