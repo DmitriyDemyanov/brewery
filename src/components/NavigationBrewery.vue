@@ -3,15 +3,21 @@
     <div class="image-logo"><img src="@/assets/beer.svg" alt="logo" /></div>
     <div class="drop-down">
       <div>
-        <b-dropdown id="dropdown-left" text="Select State" variant="primary" class="m-2"
-          :disabled="!getBreweriesList.length">
-          <b-dropdown-item class="my-class" v-for="(item, index) in getBreweriesList" :key="index">{{ item.state
+        <b-dropdown id="dropdown-left" :text="stateText" variant="primary" class="m-2"
+          :disabled="!getStatesList.length">
+          <b-dropdown-item class="my-class" v-for="(state, index) in getStatesList" :key="index"  @click="setStateFilter(state)">{{ state
 }}</b-dropdown-item>
         </b-dropdown>
 
-        <b-dropdown id="" text="Select City" variant="primary" class="m-2 my-class"
-          :disabled="!getBreweriesList.length">
-          <b-dropdown-item v-for="(item, index) in getBreweriesList" :key="index">{{ item.city }}</b-dropdown-item>
+        <b-dropdown id="" :text="cityText" variant="primary" class="m-2 my-class"
+          :disabled="!getCitiesList.length">
+          <b-dropdown-item
+            v-for="(city, index) in getCitiesList"
+            :key="index"
+            @click="setCityFilter(city)"
+          >
+            {{ city }}
+          </b-dropdown-item>
         </b-dropdown>
       </div>
     </div>
@@ -23,9 +29,35 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'NavigationBrewery',
-  computed: {
-    ...mapGetters('breweries', ['getBreweriesList']),
+  data() {
+    return {
+      city: '',
+      state: '',
+    }
   },
+  computed: {
+    ...mapGetters('breweries', ['getCitiesList', 'getStatesList']),
+    cityText() {
+      return this.city || 'Select City'
+    },
+    stateText() {
+      return this.state || 'Select state'
+    }
+  },
+  methods: {
+    setCityFilter(city) {
+      console.log(city);
+      this.city = city;
+    },
+    setStateFilter(state) {
+      console.log(state);
+      this.state = state;
+    },
+
+
+
+
+  }
 };
 </script>
 

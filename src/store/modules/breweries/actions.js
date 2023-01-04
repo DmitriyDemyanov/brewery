@@ -1,4 +1,33 @@
-const API_URL = "https://api.openbrewerydb.org/breweries";
+const API_URL = 'https://api.openbrewerydb.org/breweries';
+
+/*
+function mock(breweries) {
+  console.log('>>>', breweries);
+  const arrayCity = breweries.map((item) => item.city);
+  console.log('+++++++', arrayCity);
+
+  const arrayCityFilter = arrayCity.filter((item, pos) => arrayCity.indexOf(item) === pos);
+
+  console.log('Res ---> ', arrayCityFilter);
+}
+
+function mock2(breweries) {
+  const result = new Set();
+  breweries.forEach(brewery => result.add(brewery.city));
+  return Array.from(result);
+}
+
+function mock3(breweries) {
+  const result = breweries.reduce((acc, brewery) => {
+    const city = brewery.city;
+    if (!acc.includes(city)) {
+      acc.push(city);
+    }
+    return acc;
+  }, []);
+  return result;
+}
+*/
 
 export default {
   async fetchBreweriesList(ctx) {
@@ -6,14 +35,10 @@ export default {
       .then((response) => response.json())
       .then((data) => data);
 
-    console.log(breweries);
-    console.log("-->", ctx);
-    console.log("List Before ", ctx.getters.getBreweriesList);
     ctx.commit('SET_BREWERIES_LIST', breweries);
-    console.log("List After ", ctx.getters.getBreweriesList);
   },
 
-  async fetchBreweryBuId({commit}, id) {
+  async fetchBreweryBuId({ commit }, id) {
     const itemBrewery = await fetch(`${API_URL}/${id}`)
       .then((response) => response.json())
       .then((data) => data);
