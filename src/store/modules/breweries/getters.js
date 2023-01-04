@@ -1,6 +1,10 @@
 export default {
   getBreweriesList(state) {
-    return state.breweriesList;
+    let result = state.breweriesList;
+    if (state.selectedState) {
+      result = state.breweriesList.filter(item => item.state === state.selectedState);
+    }
+    return result;
   },
   getDetailsBrewery(state) {
     return state.activeBrewery;
@@ -17,8 +21,4 @@ export default {
       .filter((item, pos) => arrayState.indexOf(item) === pos)
       .sort();
   },
-  getStatesByState(state) {
-    const filterState = state.breweriesList.filter(item => item.state === state.breweriesOnState);
-    return filterState;
-  }
 }

@@ -1,7 +1,6 @@
 <template>
   <div>
     <NavigationBrewery />
-    <div>{{ getStatesByState }}</div>
     <div class="d-flex justify-content-between">
 
 
@@ -36,7 +35,7 @@ export default {
     BreweryDetails,
   },
   computed: {
-    ...mapGetters('breweries', ['getBreweriesList','getStatesByState'])
+    ...mapGetters('breweries', ['getBreweriesList'])
   },
   methods: {
     ...mapActions('breweries', ['fetchBreweriesList']),

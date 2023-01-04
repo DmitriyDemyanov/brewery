@@ -1,5 +1,5 @@
 export default {
   breweriesList: [],
   activeBrewery: {},
-  breweriesOnState: '',
+  selectedState: '',
 }

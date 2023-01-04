@@ -19,6 +19,7 @@
             {{ city }}
           </b-dropdown-item>
         </b-dropdown>
+        <b-button @click="setStateFilter('')">Clear state</b-button>
       </div>
     </div>
   </BContainer>
@@ -38,28 +39,21 @@ export default {
   computed: {
     ...mapGetters('breweries', ['getCitiesList', 'getStatesList']),
     cityText() {
-
       return this.city || 'Select City';
     },
     stateText() {
-      return this.state || 'Select state';
+      return this.state || 'Select State';
     }
   },
   methods: {
-    ...mapActions('breweries',['fetchBreveryBuState']),
+    ...mapActions('breweries',['setBreweryState']),
     setCityFilter(city) {
-      console.log(city);
       this.city = city;
     },
     setStateFilter(state) {
-      console.log(state);
       this.state = state;
-      this.fetchBreveryBuState(state);
+      this.setBreweryState(state);
     },
-
-
-
-
   }
 };
 </script>
