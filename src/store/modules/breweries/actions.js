@@ -38,7 +38,7 @@ export default {
     ctx.commit('SET_BREWERIES_LIST', breweries);
   },
 
-  async fetchBreweryBuId({ commit }, id) {
+  async fetchBreweryById({ commit }, id) {
     const itemBrewery = await fetch(`${API_URL}/${id}`)
       .then((response) => response.json())
       .then((data) => data);
@@ -48,5 +48,5 @@ export default {
 
   setBreweryState({ commit }, state) {
     commit('SET_STATE', state);
-  }
+  },
 };

@@ -19,10 +19,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions('breweries',['fetchBreweryBuId']),
+    ...mapActions('breweries',['fetchBreweryById']),
     onListItemClick(id) {
       console.log("Brewery: ", id);
-      this.fetchBreweryBuId(id)
+      this.fetchBreweryById(id);
     },
 
   },

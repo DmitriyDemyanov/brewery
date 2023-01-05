@@ -5,19 +5,22 @@
       <div>
         <b-dropdown id="dropdown-left" :text="stateText" variant="primary" class="m-2"
           :disabled="!getStatesList.length">
-          <b-dropdown-item class="my-class" v-for="(state, index) in getStatesList" :key="index"  @click="setStateFilter(state)">{{ state
-}}</b-dropdown-item>
-       </b-dropdown>
+          <b-dropdown-item class="my-class" 
+            v-for="(state, index) in getStatesList" 
+            :key="index" 
+           @click="setStateFilter(state)"
+           >{{ state}}
+          </b-dropdown-item>
+        </b-dropdown>
 
        <b-dropdown id="" :text="cityText" variant="primary" class="m-2 my-class"
-          :disabled="!getCitiesList.length">
-    <b-dropdown-item
-            v-for="(city, index) in getCitiesList"
-            :key="index"
-            @click="setCityFilter(city)"
-          >
-            {{ city }}
-      </b-dropdown-item>
+            :disabled="!getCitiesList.length">
+            <b-dropdown-item
+              v-for="(city, index) in getCitiesList"
+              :key="index"
+             @click="setCityFilter(city)"
+              >{{ city }}
+            </b-dropdown-item>
         </b-dropdown>
         <b-button class='btn-clear' @click="setStateFilter('')">Clear state</b-button>
       </div>
@@ -46,13 +49,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions('breweries',['setBreweryState']),
+    ...mapActions('breweries',['setBreweryState','setBreweryAddress']),
     setCityFilter(city) {
       this.city = city;
     },
     setStateFilter(state) {
       this.state = state;
       this.setBreweryState(state);
+      this.setBreweryAddress()
     },
   }
 };

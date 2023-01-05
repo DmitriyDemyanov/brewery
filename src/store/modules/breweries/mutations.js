@@ -7,5 +7,5 @@ export default {
   },
   SET_STATE(state, payload) {
     state.selectedState = payload;
-  }
+  },
 };
