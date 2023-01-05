@@ -7,19 +7,19 @@
           :disabled="!getStatesList.length">
           <b-dropdown-item class="my-class" v-for="(state, index) in getStatesList" :key="index"  @click="setStateFilter(state)">{{ state
 }}</b-dropdown-item>
-        </b-dropdown>
+       </b-dropdown>
 
-        <b-dropdown id="" :text="cityText" variant="primary" class="m-2 my-class"
+       <b-dropdown id="" :text="cityText" variant="primary" class="m-2 my-class"
           :disabled="!getCitiesList.length">
-          <b-dropdown-item
+    <b-dropdown-item
             v-for="(city, index) in getCitiesList"
             :key="index"
             @click="setCityFilter(city)"
           >
             {{ city }}
-          </b-dropdown-item>
+      </b-dropdown-item>
         </b-dropdown>
-        <b-button @click="setStateFilter('')">Clear state</b-button>
+        <b-button class='btn-clear' @click="setStateFilter('')">Clear state</b-button>
       </div>
     </div>
   </BContainer>
@@ -88,6 +88,10 @@ export default {
     background: darkgoldenrod;
     border-radius: 3px;
   }
+}
+.btn-clear {
+  background-color: red;
+  margin: 0.5rem;
 }
 </style>
 

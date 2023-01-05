@@ -15,7 +15,7 @@ export default {
   props: {
     brewery: {
       type: Object,
-      reqired: true,
+      required: true,
     },
   },
   methods: {
