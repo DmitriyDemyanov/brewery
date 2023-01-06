@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapp">
+  <div class="wrap">
     <div class="brewery-details" v-if="Object.keys(getDetailsBrewery).length">
       <div class="country">country - {{ country }}</div>
       <div class="state">state - {{ getDetailsBrewery.state }}</div>
@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style scoped>
-.wrapp {
+.wrap {
   width: 100%;
   text-transform: capitalize;
   font-size: 24px;

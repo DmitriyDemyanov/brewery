@@ -94,9 +94,13 @@ export default {
   }
 }
 .btn-clear {
-  background-color: red;
+  background-color: grey;
   margin: 0.5rem;
+  
 }
+.btn-clear:hover {
+    background-color: red;
+  }
 </style>
 
 
