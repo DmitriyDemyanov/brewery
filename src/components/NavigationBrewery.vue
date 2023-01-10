@@ -3,26 +3,40 @@
     <div class="image-logo"><img src="@/assets/beer.svg" alt="logo" /></div>
     <div class="drop-down">
       <div>
-        <b-dropdown id="dropdown-left" :text="stateText" variant="primary" class="m-2"
-          :disabled="!getStatesList.length">
-          <b-dropdown-item class="my-class" 
-            v-for="(state, index) in getStatesList" 
-            :key="index" 
-           @click="setStateFilter(state)"
-           >{{ state}}
-          </b-dropdown-item>
+        <b-dropdown
+          id="dropdown-left"
+          :text="stateText"
+          variant="primary"
+          class="m-2"
+          :disabled="!getStatesList.length"
+        >
+          <b-dropdown-item
+            class="my-class"
+            v-for="(state, index) in getStatesList"
+            :key="index"
+            @click="setStateFilter(state)"
+            >{{ state }}</b-dropdown-item
+          >
         </b-dropdown>
 
-       <b-dropdown id="" :text="cityText" variant="primary" class="m-2 my-class"
-            :disabled="!getCitiesList.length">
-            <b-dropdown-item
-              v-for="(city, index) in getCitiesList"
-              :key="index"
-             @click="setCityFilter(city)"
-              >{{ city }}
-            </b-dropdown-item>
+        <b-dropdown
+          id=""
+          :text="cityText"
+          variant="primary"
+          class="m-2 my-class"
+          :disabled="!getCitiesList.length"
+        >
+          <b-dropdown-item
+            v-for="(city, index) in getCitiesList"
+            :key="index"
+            @click="setCityFilter(city)"
+          >
+            {{ city }}
+          </b-dropdown-item>
         </b-dropdown>
-        <b-button class='btn-clear' @click="setStateFilter('')">Clear state</b-button>
+        <b-button class="btn-clear" @click="setStateFilter('')"
+          >Clear state</b-button
+        >
       </div>
     </div>
   </BContainer>
@@ -37,7 +51,7 @@ export default {
     return {
       city: '',
       state: '',
-    }
+    };
   },
   computed: {
     ...mapGetters('breweries', ['getCitiesList', 'getStatesList']),
@@ -45,20 +59,20 @@ export default {
       return this.city || 'Select City';
     },
     stateText() {
-      return this.state || 'Select State';
-    }
+      return this.state || 'Select state';
+    },
   },
   methods: {
-    ...mapActions('breweries',['setBreweryState','setBreweryAddress']),
+    ...mapActions('breweries', ['setBreweryState', 'setBreweryAddress']),
     setCityFilter(city) {
       this.city = city;
     },
     setStateFilter(state) {
       this.state = state;
       this.setBreweryState(state);
-      this.setBreweryAddress()
+      this.setBreweryAddress();
     },
-  }
+  },
 };
 </script>
 
@@ -80,7 +94,6 @@ export default {
   &::-webkit-scrollbar {
     width: 6px;
     border-radius: 3px;
-
   }
 
   &::-webkit-scrollbar-track {
@@ -96,11 +109,8 @@ export default {
 .btn-clear {
   background-color: grey;
   margin: 0.5rem;
-  
 }
 .btn-clear:hover {
-    background-color: red;
-  }
+  background-color: red;
+}
 </style>
-
-
