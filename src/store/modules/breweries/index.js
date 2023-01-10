@@ -51,3 +51,23 @@ console.log('==>', isMatchExist);
 
 const isMatchExist_2 = checkMatch_2(numbersArray, match_2);
 console.log('2 ==>', isMatchExist_2);
+
+function minMinMax(array) {
+  const sortArray = array.sort((a,b) => a - b);
+  console.log('>>>>>>>>>>>>',sortArray);
+  
+   const min = sortArray[0];
+  console.log('___________',min);
+  
+  const max = sortArray[sortArray.length-1];
+  console.log('^^^^^^^^^',max);
+  
+
+  // const max = Math.max( array, null);
+  // console.log('^^^^^^^^^', max);
+  // const min = Math.min(null, sortArray);
+  // console.log('___________', min);
+}
+
+console.log(minMinMax([1,3,-3,-2,8,-1]));
+// minMinMax([1, 3, -3, -2, 8, -1]), [-3, 0, 8], 'Test Failed';
