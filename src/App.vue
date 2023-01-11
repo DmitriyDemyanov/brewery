@@ -21,4 +21,12 @@ body {
 body a {
   text-decoration: none;
 }
+.title {
+  text-transform: capitalize;
+  text-align: center;
+  font-size: 30px;
+  background-image: linear-gradient(45deg, gold, #1613a9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 </style>

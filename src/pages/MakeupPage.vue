@@ -1,21 +1,18 @@
 <template>
   <div class="main-page">
     <router-link class="p-2" to="/"> Main Page </router-link>
-    <div class="title">hello fashion</div>
+    <div class="text-center">
+      <span class="title">hello fashion</span>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-name: 'MakeupPage'
-}
+  name: 'MakeupPage',
+};
 </script>
 
-<style lang='scss' scoped>
-.title {
-  text-transform: capitalize;
-  color: gold;
-  font-size: 30px;
-  text-align: center;
-}
+<style lang="scss" scoped>
+
 </style>
