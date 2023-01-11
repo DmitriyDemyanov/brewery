@@ -29,9 +29,9 @@ export default {
 };
 
 
-function addLength(str) { 
- return str.split(' ').map( item => item +' '+ item.length);
-}
+// function addLength(str) { 
+//  return str.split(' ').map( item => item +' '+ item.length);
+// }
 
 
-console.log(addLength('you will win'));
+// console.log(addLength('you will win'));
