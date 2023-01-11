@@ -1,22 +1,24 @@
 <template>
   <BContainer>
-    <router-link class="p-2" to="/"></router-link>
     <router-view class="main-view"></router-view>
   </BContainer>
 </template>
 
 <script>
 export default {
-  name: 'App'
-}
+  name: 'App',
+};
 </script>
 
 <style>
-#app {
+body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+body a {
+  text-decoration: none;
 }
 </style>
