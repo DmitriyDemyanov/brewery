@@ -98,19 +98,18 @@ export default {
 // console.log(flip('R', [3, 2, 1, 2,33]));
 // console.log(flip('L', [1, 4, 5, 3, 5,44]));
 
-function smaller(numbers) {
-  const res = [];
-  for (let i = 0; i < numbers.length; i++) {
-    let counter = 0;
-    for (let c = i + 1; c < numbers.length; c++) {
-      if (numbers[i] > numbers[c]) {
-        counter++;
-      }
-    }
-    res.push(counter);
-  }
-  return res;
-}
+// function smaller(numbers) {
+//   const res = [];
+//   for (let i = 0; i < numbers.length; i++) {
+//     let counter = 0;
+//     for (let c = i + 1; c < numbers.length; c++) {
+//       if (numbers[i] > numbers[c]) {
+//         counter++;
+//       }
+//     }
+//     res.push(counter);
+//   }
+//   return res;
+// }
 
-
-console.log(smaller([5, 4, 7, 9, 2, 4, 4, 5, 6])); //expecting  [4, 1, 5, 5, 0, 0, 0, 0, 0])
+//console.log(smaller([5, 4, 7, 9, 2, 4, 4, 5, 6])); //expecting  [4, 1, 5, 5, 0, 0, 0, 0, 0])
