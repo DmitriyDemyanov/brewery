@@ -1,6 +1,7 @@
 <template>
   <BContainer class="d-flex justify-content-between">
     <div class="image-logo"><img src="@/assets/beer.svg" alt="logo" /></div>
+    <router-link class="p-2" to="/"> Main Page </router-link>
     <div class="drop-down">
       <div>
         <b-dropdown

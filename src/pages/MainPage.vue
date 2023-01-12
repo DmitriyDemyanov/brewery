@@ -1,79 +1,58 @@
 <template>
-  <div>
-    <NavigationBrewery />
-    <div class="d-flex justify-content-between">
-      <div class="wrapper-brewery" v-if="getBreweriesList.length">
-        <BreweryListItem
-          v-for="(brewery, index) in getBreweriesList"
-          :brewery="brewery"
-          :key="index"
-        />
+  <div class="d-flex justify-content-between main-nav">
+    <router-link class="p-2" to="/brewery">
+      <div>
+        <img src="@/assets/brewery.jpg" alt="photo" />
+        <div class="title-photo">brewery</div>
       </div>
-      <div class="spinner" v-else>
-        <div class="text-center">
-          <b-spinner variant="primary" type="grow"></b-spinner>
-        </div>
+    </router-link>
+    <router-link class="p-2" to="/makeup">
+      <div class="image">
+        <img src="@/assets/makeup-main.jpg" alt="photo" />
+        <div class="title-photo">makeup</div>
       </div>
-
-      <div class="wrapper-details">
-        <BreweryDetails />
+    </router-link>
+    <router-link class="p-2" to="/airTickets">
+      <div class="image">
+        <img src="@/assets/airplane.jpg" alt="photo" />
+        <div class="title-photo">air tickets</div>
       </div>
-    </div>
-
-    <GoogleMap :address="getMap" />
+    </router-link>
+    <router-link class="p-2" to="/about">
+      <div class="image">
+        <img src="@/assets/about.jpg" alt="photo" />
+        <div class="title-photo">about</div>
+      </div>
+    </router-link>
   </div>
 </template>
 
 <script>
-import NavigationBrewery from '@/components/NavigationBrewery';
-import BreweryListItem from '@/components/BreweryListItem';
-import BreweryDetails from '@/components/BreweryDetails';
-import GoogleMap from '@/components/GoogleMap';
-
-import { mapActions, mapGetters } from 'vuex';
 export default {
   name: 'MainPage',
-  components: {
-    NavigationBrewery,
-    BreweryListItem,
-    BreweryDetails,
-    GoogleMap,
-  },
-  computed: {
-    ...mapGetters('breweries', ['getBreweriesList', 'getMap']),
-  },
-  methods: {
-    ...mapActions('breweries', ['fetchBreweriesList']),
-  },
-  mounted() {
-    this.fetchBreweriesList();
-  },
 };
 </script>
 
-<style lang='scss' scoped>
-.wrapper-brewery {
-  padding-right: 10px;
-  width: calc(50% - 75px);
-  max-height: 500px;
-  overflow-y: auto;
-}
-::-webkit-scrollbar {
-  width: 15px;
-  border-radius: 20px;
-}
-::-webkit-scrollbar-track {
-  background: linear-gradient(to bottom, yellow, rgb(4, 125, 155));
-  border-radius: 20px;
-  box-shadow: 2px 2px rgba(233, 3, 3, 0.938) inset;
-}
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, rgb(4, 125, 155), yellow);
-  height: 10px;
-  border-radius: 20px;
+<style lang="scss" scoped>
+.main-nav {
+  width: 100%;
+  padding-top: 50px;
+
+  a {
+    width: 25%;
+  }
 }
 
-.wrapper-details {
-  width: calc(50% - 75px);
+.title-photo {
+  font-size: 30px;
+  text-transform: capitalize;
+  color: gold;
+  text-align: center;
+}
+
+img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
 }
 </style>

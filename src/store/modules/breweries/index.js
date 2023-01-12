@@ -51,3 +51,48 @@ export default {
 
 // const isMatchExist_2 = checkMatch_2(numbersArray, match_2);
 // console.log('2 ==>', isMatchExist_2);
+
+// function minMinMax(array) {
+//   const result = [];
+//   const sortArray = array.sort((a,b) => a - b);
+//   console.log('>>>>>>>>>>>>',sortArray);
+  
+  // const min = sortArray[0];
+  // console.log('___________',min);
+  
+  // const max = sortArray[sortArray.length-1];
+  // console.log('^^^^^^^^^',max);
+  // console.log(result);
+  
+
+//   const max = Math.max.apply(null, array);
+//   console.log('^^^^^^^^^', max);
+//   const min = Math.min.apply(null, sortArray);
+//   console.log('___________',min);
+//   result.push(min);
+  
+
+ 
+//   console.log('<<<<>>>>>',result);
+// }
+
+// console.log(minMinMax([1,3,-3,-2,8,-1]));
+// // minMinMax([1, 3, -3, -2, 8, -1]), [-3, 0, 8], 'Test Failed';
+
+
+// const bird = {
+//   legs: 2,
+//   name: 'Bird',
+//   tellAboutYou(a,b,c) {
+//     console.log(`a: ${a}, b: ${b}, c: ${c}`);
+//     console.log('I am a ' + this.name + ' and I have ' + this.legs + ' legs.');
+//   }
+// };
+
+// const fox = {
+//   name: 'Fox',
+//   legs: 4
+// };
+
+// bird.tellAboutYou();
+// bird.tellAboutYou.apply(fox);
