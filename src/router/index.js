@@ -5,7 +5,7 @@ import MainPage from '@/pages/MainPage';
 import BreweryPage from '@/pages/BreweryPage';
 import MakeupPage from '@/pages/MakeupPage';
 import AirTicketsPage from '@/pages/AirTicketsPage';
-import AboutPage from '@/pages/AboutPage';
+import NewsPage from '@/pages/NewsPage';
 
 Vue.use(VueRouter);
 
@@ -31,9 +31,9 @@ const routes = [
     component: AirTicketsPage,
   },
   {
-    path: '/about',
-    name: 'about',
-    component: AboutPage,
+    path: '/news',
+    name: 'news',
+    component: NewsPage,
   },
 ];
 

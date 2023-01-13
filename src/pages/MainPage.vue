@@ -18,10 +18,10 @@
         <div class="title-photo">air tickets</div>
       </div>
     </router-link>
-    <router-link class="p-2" to="/about">
+    <router-link class="p-2" to="/news">
       <div class="image">
         <img src="@/assets/about.jpg" alt="photo" />
-        <div class="title-photo">about</div>
+        <div class="title-photo">news</div>
       </div>
     </router-link>
   </div>
