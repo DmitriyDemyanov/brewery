@@ -1,5 +1,5 @@
 export default {
   makeup: [],
   productsOnPage: 12,
-  pageNumber: 2
+  pageNumber: 4
 };

@@ -10,7 +10,7 @@
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">{{ product.name }}</li>
-        <li class="list-group-item">{{ product.category }}</li>
+        <li class="list-group-item">{{ category}}</li>
         <li class="list-group-item">{{ price }}</li>
       </ul>
       <div class="card-body">
@@ -40,6 +40,9 @@ export default {
         this.product.price_sign || this.product.currency
       }`;
     },
+    category() {
+      return this.product.category || 'makeup';
+    }
   },
 };
 </script>
@@ -51,5 +54,10 @@ export default {
 }
 .wrapper-item {
   margin-top: 50px;
+  // height: 500px;
+}
+.card-text {
+  height: 200px;
+  overflow: auto;
 }
 </style>

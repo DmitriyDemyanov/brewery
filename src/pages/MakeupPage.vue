@@ -37,6 +37,27 @@
           v-for="(product, index) in products"
           :key="index"
         />
+        <div class="overflow-auto pagination">
+
+          <b-pagination
+            v-model="getCurrencyPage" 
+            :total-rows="rows"
+            :per-page="getNumberPages"
+            aria-controls="my-table"
+          ></b-pagination>
+
+          <p class="mt-3 color-text">
+            Current Page: {{ getCurrencyPage }} per-page:
+            {{ getNumberPages }} number: {{ rows }}
+          </p>
+
+          <b-table
+            id="my-table"
+            :per-page="getNumberPages"
+            :current-page="getCurrencyPage"
+            small
+          ></b-table>
+        </div>
       </div>
     </div>
   </div>
@@ -52,7 +73,16 @@ export default {
     MakeUpItem,
   },
   computed: {
-    ...mapGetters('makeup', ['getAllProducts', 'products']),
+    ...mapGetters('makeup', [
+      'getAllProducts',
+      'products',
+      'getNumberPages',
+      'getCurrencyPage',
+      'getAllLength',
+    ]),
+    rows() {
+      return Math.ceil(this.getAllLength);
+    },
   },
   methods: {
     ...mapActions('makeup', ['fetchMakeupList']),
@@ -119,5 +149,11 @@ export default {
 }
 .text-option {
   text-transform: capitalize;
+}
+.pagination {
+  margin: 30px auto;
+}
+.color-text {
+  color: #fff;
 }
 </style>
