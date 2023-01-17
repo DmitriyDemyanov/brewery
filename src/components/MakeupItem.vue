@@ -1,88 +1,55 @@
 <template>
   <div class="wrapper-item d-flex justify-content-around">
     <div class="card" style="width: 18rem">
-      <img
-        src="https://static.insales-cdn.com/files/1/660/10781332/original/PHOTO-2019-12-09-19-44-18-2.jpg"
-        class="card-img-top"
-        alt="..."
-      />
+      <img :src="renderImage" class="card-img-top" :alt="product.name" />
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
+        <h5 class="card-title">{{ product.brand }}</h5>
         <p class="card-text">
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
+          {{ product.description }}
         </p>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item">An item</li>
-        <li class="list-group-item">A second item</li>
-        <li class="list-group-item">A third item</li>
+        <li class="list-group-item">{{ product.name }}</li>
+        <li class="list-group-item">{{ product.category }}</li>
+        <li class="list-group-item">{{ price }}</li>
       </ul>
       <div class="card-body">
-        <a href="#" class="card-link">Card link</a>
+        <a :href="product.product_link" class="card-link">{{ product.name }}</a>
       </div>
     </div>
-    <div class="card" style="width: 18rem">
-      <img
-        src="https://static.insales-cdn.com/files/1/660/10781332/original/PHOTO-2019-12-09-19-44-18-2.jpg"
-        class="card-img-top"
-        alt="..."
-      />
-      <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
-        </p>
-      </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">An item</li>
-        <li class="list-group-item">A second item</li>
-        <li class="list-group-item">A third item</li>
-      </ul>
-      <div class="card-body">
-        <a href="#" class="card-link">Card link</a>
-      </div>
-    </div>
-    <div class="card" style="width: 18rem">
-      <img
-        src="https://static.insales-cdn.com/files/1/660/10781332/original/PHOTO-2019-12-09-19-44-18-2.jpg"
-        class="card-img-top"
-        alt="..."
-      />
-      <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
-        </p>
-      </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">An item</li>
-        <li class="list-group-item">A second item</li>
-        <li class="list-group-item">A third item</li>
-      </ul>
-      <div class="card-body">
-        <a href="#" class="card-link">Card link</a>
-      </div>
-    </div>
-
-
-
-
   </div>
 </template>
 
 <script>
+const defaultImage = require('@/assets/makeup/makeup-test.jpg');
+
 export default {
   name: 'MakeUpItem',
+  props: {
+    product: {
+      type: Object,
+      required: true,
+    },
+  },
+  computed: {
+    renderImage() {
+      return defaultImage; //this.product.image_link || "@/assets/makeup/makeup-test.jpg";
+    },
+    price() {
+      return `${this.product.price} ${
+        this.product.price_sign || this.product.currency
+      }`;
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-
-.card {
-  opacity: 0.4;
+// overflow
+.card-title {
+  text-transform: capitalize;
 }
-
+.wrapper-item {
+  margin-top: 50px;
+}
 </style>
