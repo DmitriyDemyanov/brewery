@@ -19,7 +19,7 @@ export default {
   getNumberPages(state) {
     return state.productsOnPage;
   },
-  getCurrencyPage(state) {
+  getCurrentPage(state) {
     return state.pageNumber;
   },
   getAllLength(state) {

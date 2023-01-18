@@ -45,26 +45,16 @@
           v-for="(product, index) in products"
           :key="index"
         />
-        <div class="overflow-auto pagination">
-          <b-pagination
-            v-model="getCurrencyPage" 
-            :total-rows="rows"
-            :per-page="getNumberPages"
-            aria-controls="my-table"
-          ></b-pagination>
+      </div>
 
-          <p class="mt-3 color-text">
-            Current Page: {{ getCurrencyPage }} per-page:
-            {{ getNumberPages }} number: {{ rows }}
-          </p>
-
-          <b-table
-            id="my-table"
-            :per-page="getNumberPages"
-            :current-page="getCurrencyPage"
-            small
-          ></b-table>
-        </div>
+      <div class="overflow-auto pagination">
+        <b-pagination
+          v-model="currentPage"
+          @click="onSwitchPage"
+          :total-rows="rows"
+          :per-page="getNumberPages"
+          aria-controls="my-table"
+        ></b-pagination>
       </div>
     </div>
   </div>
@@ -78,26 +68,6 @@ export default {
   name: 'MakeupPage',
   components: {
     MakeUpItem,
-  },
-  computed: {
-    ...mapGetters('makeup', [
-      'getAllProducts',
-      'products',
-      'getNumberPages',
-      'getCurrencyPage',
-      'getAllLength',
-    ]),
-    rows() {
-      return Math.ceil(this.getAllLength);
-    },
-  },
-  methods: {
-    ...mapActions('makeup', ['fetchMakeupList']),
-  },
-  mounted() {
-    if (!this.getAllProducts.length) {
-      this.fetchMakeupList();
-    }
   },
   data() {
     return {
@@ -115,6 +85,38 @@ export default {
         { text: 'nail_polish', value: 'J' },
       ],
     };
+  },
+  computed: {
+    ...mapGetters('makeup', [
+      'getAllProducts',
+      'products',
+      'getNumberPages',
+      'getCurrentPage',
+      'getAllLength',
+    ]),
+    rows() {
+      return this.getAllProducts.length;
+    },
+    currentPage: {
+      get() {
+        return this.getCurrentPage;
+      },
+      set(page) {
+        this.changePage(page);
+        console.log('Set Page: ', page);
+      },
+    },
+  },
+  methods: {
+    ...mapActions('makeup', ['fetchMakeupList', 'changePage']),
+    onSwitchPage(val) {
+      console.log('On Switch Page', val);
+    },
+  },
+  mounted() {
+    if (!this.getAllProducts.length) {
+      this.fetchMakeupList();
+    }
   },
 };
 </script>

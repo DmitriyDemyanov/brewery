@@ -1,7 +1,11 @@
 <template>
   <div class="wrapper-item d-flex justify-content-around">
     <div class="card" style="width: 18rem">
-      <img :src="renderImage" class="card-img-top" :alt="product.name" />
+      <img
+        :src="renderImage"
+        class="card-img-top product-image"
+        :alt="product.name"
+      />
       <div class="card-body">
         <h5 class="card-title">{{ product.brand }}</h5>
         <p class="card-text">
@@ -10,7 +14,7 @@
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">{{ product.name }}</li>
-        <li class="list-group-item">{{ category}}</li>
+        <li class="list-group-item">{{ category }}</li>
         <li class="list-group-item">{{ price }}</li>
       </ul>
       <div class="card-body">
@@ -33,22 +37,32 @@ export default {
   },
   computed: {
     renderImage() {
-      return defaultImage; //this.product.image_link || "@/assets/makeup/makeup-test.jpg";
+      return this.product.image_link || defaultImage;
     },
     price() {
       return `${this.product.price} ${
-        this.product.price_sign || this.product.currency
+        this.product.price_sign || this.product.currency || ''
       }`;
     },
     category() {
       return this.product.category || 'makeup';
-    }
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 // overflow
+.card:hover {
+  scale: 1.05;
+  transition: scale 300ms;
+  cursor: pointer;
+}
+.product-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
 .card-title {
   text-transform: capitalize;
 }

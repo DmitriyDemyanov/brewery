@@ -26,6 +26,11 @@ const routes = [
     component: MakeupPage,
   },
   {
+    path: '/makeup/:id',
+    name: 'makeup',
+    component: MakeupPage,
+  },
+  {
     path: '/airTickets',
     name: 'airTickets',
     component: AirTicketsPage,
