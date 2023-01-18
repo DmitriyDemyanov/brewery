@@ -25,4 +25,7 @@ export default {
   getAllLength(state) {
     return state.makeup.length / state.productsOnPage;
   },
+  getOneProduct(state) {
+    return state.makeup[2];
+  }
 };

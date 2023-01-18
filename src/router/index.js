@@ -6,6 +6,7 @@ import BreweryPage from '@/pages/BreweryPage';
 import MakeupPage from '@/pages/MakeupPage';
 import AirTicketsPage from '@/pages/AirTicketsPage';
 import NewsPage from '@/pages/NewsPage';
+import MakeupProduct from '@/components/MakeupProduct';
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,11 @@ const routes = [
     path: '/makeup',
     name: 'makeup',
     component: MakeupPage,
+  },
+  {
+    path: '/product',
+    name: 'product',
+    component: MakeupProduct,
   },
   {
     path: '/makeup/:id',

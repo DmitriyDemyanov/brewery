@@ -9,6 +9,7 @@
 
     <div class="main-bg">
       <router-link class="p-2" to="/"> To back </router-link>
+      <router-link class="p-2" to="/Product"> product link </router-link>
       <nav class="d-flex justify-content-around">
         <label class="product-text" for="product-type">
           <span class="title">hello fashion</span>
