@@ -31,14 +31,21 @@
         </select>
         <div class="select-test">Selected: {{ selected }}</div>
       </nav>
-      <div class="d-flex flex-wrap justify-content-between">
+
+      <div
+        class="spinner d-flex justify-content-center"
+        v-if="!products.length"
+      >
+        <b-spinner variant="primary" label="LOADING"></b-spinner>
+      </div>
+
+      <div class="d-flex flex-wrap justify-content-between" v-else>
         <MakeUpItem
           :product="product"
           v-for="(product, index) in products"
           :key="index"
         />
         <div class="overflow-auto pagination">
-
           <b-pagination
             v-model="getCurrencyPage" 
             :total-rows="rows"
@@ -155,5 +162,8 @@ export default {
 }
 .color-text {
   color: #fff;
+}
+.spinner {
+  margin-top: 100px;
 }
 </style>
