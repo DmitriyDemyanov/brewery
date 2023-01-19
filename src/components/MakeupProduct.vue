@@ -1,53 +1,77 @@
 <template>
   <div>
     <router-link class="p-2" to="/makeup"> Back to makeup </router-link>
+
     <header class="d-flex justify-content-between header">
-      <div class="name-product">{{getOneProduct.category }}</div>
+      <div class="name-product">{{ getOneProduct.category }}</div>
       <div class="basket position-relative">
         <img src="@/assets/header-icon-cart.svg" alt="icon" />
         <div class="header-icon-cart">3</div>
       </div>
     </header>
+
     <div class="container">
-      <div class="wrapper-product d-flex justify-content-between">
+      <div
+        class="wrapper-product d-flex justify-content-between"
+        v-if="Object.keys(getOneProduct).length"
+      >
         <div class="photo-product">
           <img :src="getOneProduct.image_link" alt="photo" />
         </div>
 
         <div class="about-product">
-          <div class="brand">{{getOneProduct.category }}</div>
+          <div class="brand">{{ getOneProduct.category }}</div>
           <div class="name">{{ getOneProduct.name }}</div>
-          <div class="description"> {{ getOneProduct.description }}
-           
-          </div>
+          <div class="description">{{ getOneProduct.description }}</div>
 
           <div class="all-price d-flex align-items-center">
             {{ currentPrice }} <span class="sale">50%</span>
           </div>
+
           <div class="old-price">
             {{ getOneProduct.price_sign }}{{ oldPrice }}
           </div>
-          <div class="wrapper-btn d-flex">
-            <button>-</button>
-            <span>number</span>
-            <button>+</button>
-            <button class="btn-cart">
-              <img src="@/assets/basket.svg" alt="icon" />
-              Add to cart
-            </button>
+
+          <div class="wrapper-btn d-flex align-items-center">
+            <div class="d-flex wrapper-quantity">
+              <div class="cursor" @click="changeQuantity">
+                <img src="@/assets/makeup/minus.svg" alt="-" />
+              </div>
+              <span class="quantity">{{ quantity }}</span>
+              <div class="cursor" @click="changeQuantity">
+                <img src="@/assets/makeup/plus.svg" alt="+" />
+              </div>
+            </div>
+
+            <MakeupButton title="Add to cart">
+              <template v-slot:prepend>
+                <img src="@/assets/basket.svg" alt="icon" />
+              </template>
+            </MakeupButton>
           </div>
         </div>
       </div>
+
+      <div v-else>No Product</div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import MakeupButton from './MakeupButton.vue';
 
+const discount = 50;
 export default {
   name: 'MakeupProduct',
-  components: {},
+  components: {
+    MakeupButton,
+  },
+  data() {
+    return {
+      quantity: 1,
+    };
+  },
   computed: {
     ...mapGetters('makeup', ['getOneProduct']),
     currentPrice() {
@@ -55,17 +79,29 @@ export default {
     },
     oldPrice() {
       return (
-        (this.getOneProduct.price * 50) / 100 + Number(this.getOneProduct.price)
-      ); // 5 * 50 / 100
+        (this.getOneProduct.price * discount) / 100 +
+        Number(this.getOneProduct.price)
+      );
+    },
+  },
+  methods: {
+    changeQuantity() {
+      console.log('---');
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@500;700&display=swap');
+
 .container {
-  width: 1016px;
+  width: 1036px;
   margin: 0 auto;
+  font-family: 'Kumbh Sans', sans-serif;
+}
+.wrapper-product {
+  margin-bottom: 70px;
 }
 .basket {
   margin-right: 195px;
@@ -105,10 +141,9 @@ export default {
     object-fit: cover;
     border-radius: 20px;
   }
-  
 }
 .about-product {
-  width: calc(50% - 63px);
+  width: calc(50% - 46px);
 }
 .brand {
   margin-bottom: 19px;
@@ -128,6 +163,7 @@ export default {
 }
 .description {
   margin-bottom: 30px;
+  margin-right: 20px;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -165,21 +201,20 @@ export default {
 
   color: #1d2025;
 }
-.btn-cart {
-  display: flex;
+.wrapper-quantity {
   align-items: center;
-  margin-left: 15px;
-  padding: 17px 77px;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 20px;
-  color: #ffffff;
-  background: #ff7d1a;
-  box-shadow: 0px 8px 10px #ffede0;
+  width: 157px;
+  height: 55px;
+  background-color: #f7f8fd;
   border-radius: 10px;
-  border: none;
-  & img {
-    margin-right: 16px;
-  }
+  padding: 0 21px 0 16px;
+}
+.quantity {
+  margin: 0 45px;
+  font-size: 16px;
+}
+.cursor {
+  cursor: pointer;
+  user-select: none;
 }
 </style>
