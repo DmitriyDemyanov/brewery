@@ -1,5 +1,5 @@
 <template>
-  <button class="makeup-btn">
+  <button  class="makeup-btn">
     <slot name="prepend"></slot>
     {{ title }}
     <slot name="append"></slot>
