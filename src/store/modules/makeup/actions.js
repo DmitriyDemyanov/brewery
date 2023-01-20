@@ -14,4 +14,9 @@ export default {
   changePage({ commit }, pageNumber) {
     commit('SET_CURRENT_PAGE', pageNumber);
   },
+  addToCart({ commit, getters }, product) {
+    commit('SET_PRODUCT_LIST', product);
+    const cart = getters.getCart;
+    localStorage.setItem('makeupCart', JSON.stringify(cart));
+  },
 };

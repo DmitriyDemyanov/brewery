@@ -190,4 +190,20 @@ export default {
   getOneProduct(state) {
     return state.makeup[2] || mockProduct;
   },
+  getProductById(state) {
+    return function (id) {
+      return state.makeup.find((product) => product.id === +id);
+    };
+  },
+  getCart(state) {
+    return state.cart;
+  },
+  getCartQuantity({ cart }) {
+    // cart - []
+    return cart.reduce(function (acc, current) {
+      acc += current.quantity;
+      console.log('######', cart);
+      return acc;
+    }, 0);
+  },
 };

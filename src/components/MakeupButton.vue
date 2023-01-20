@@ -1,5 +1,5 @@
 <template>
-  <button  class="makeup-btn">
+  <button class="makeup-btn" @click="$emit('buttonClicked')">
     <slot name="prepend"></slot>
     {{ title }}
     <slot name="append"></slot>
@@ -13,7 +13,9 @@ export default {
     title: {
       type: String,
       required: true,
-    },
+    }
+  },
+  methods: {
   },
 };
 </script>

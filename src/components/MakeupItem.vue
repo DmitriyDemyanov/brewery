@@ -1,6 +1,6 @@
 <template>
-  <div class="wrapper-item d-flex justify-content-around">
-    <div class="card" style="width: 18rem">
+  <div class="wrapper-item" @click="onSelectProduct">
+    <div class="card">
       <img
         :src="renderImage"
         class="card-img-top product-image"
@@ -48,11 +48,20 @@ export default {
       return this.product.category || 'makeup';
     },
   },
+  methods: {
+    onSelectProduct() {
+      console.log(this.product.id);
+      this.$router.push(`/makeup/${this.product.id}`);
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-// overflow
+.wrapper-item {
+  margin-bottom: 50px;
+  width: 24%;
+}
 .card:hover {
   scale: 1.05;
   transition: scale 300ms;
@@ -65,10 +74,6 @@ export default {
 }
 .card-title {
   text-transform: capitalize;
-}
-.wrapper-item {
-  margin-top: 50px;
-  // height: 500px;
 }
 .card-text {
   height: 200px;

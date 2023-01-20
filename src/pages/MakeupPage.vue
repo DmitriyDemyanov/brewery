@@ -40,7 +40,7 @@
         <b-spinner variant="primary" label="LOADING"></b-spinner>
       </div>
 
-      <div class="d-flex flex-wrap justify-content-between" v-else>
+      <div class="d-flex flex-wrap justify-content-between p-4" v-else>
         <MakeUpItem
           :product="product"
           v-for="(product, index) in products"

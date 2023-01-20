@@ -27,14 +27,9 @@ const routes = [
     component: MakeupPage,
   },
   {
-    path: '/product',
-    name: 'product',
-    component: MakeupProduct,
-  },
-  {
     path: '/makeup/:id',
     name: 'makeup',
-    component: MakeupPage,
+    component: MakeupProduct,
   },
   {
     path: '/airTickets',

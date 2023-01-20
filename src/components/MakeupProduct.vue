@@ -3,41 +3,39 @@
     <router-link class="p-2" to="/makeup"> Back to makeup </router-link>
 
     <header class="d-flex justify-content-between header">
-      <div class="name-product">{{ getOneProduct.category }}</div>
-      <div class="basket position-relative">
+      <div class="name-product">{{ product.category }}</div>
+      <div class="cart position-relative">
         <img src="@/assets/header-icon-cart.svg" alt="icon" />
-        <div class="header-icon-cart">{{ quantity }}</div>
+        <div class="header-icon-cart">{{ getCartQuantity }}</div>
       </div>
     </header>
 
     <div class="container">
       <div
         class="wrapper-product d-flex justify-content-between"
-        v-if="Object.keys(getOneProduct).length"
+        v-if="Object.keys(product).length"
       >
         <div class="photo-product">
-          <img :src="getOneProduct.image_link" alt="photo" />
+          <img :src="product.image_link" alt="photo" />
         </div>
 
         <div class="about-product">
-          <div class="brand">{{ getOneProduct.category }}</div>
-          <div class="name">{{ getOneProduct.name }}</div>
-          <div class="description">{{ getOneProduct.description }}</div>
+          <div class="brand">{{ product.category }}</div>
+          <div class="name">{{ product.name }}</div>
+          <div class="description">{{ product.description }}</div>
 
           <div class="all-price d-flex align-items-center">
             {{ currentPrice }} <span class="sale">50%</span>
           </div>
 
-          <div class="old-price">
-            {{ getOneProduct.price_sign }}{{ oldPrice }}
-          </div>
+          <div class="old-price">{{ product.price_sign }}{{ oldPrice }}</div>
 
           <div class="wrapper-btn d-flex align-items-center">
             <div class="d-flex wrapper-quantity">
               <div
-                :disabled="onMinusDisabled"
                 class="cursor"
-                @click="changeQuantity('a')"
+                :class="{ disabled: quantity === 1 }"
+                @click="changeQuantity('minus')"
               >
                 <svg
                   width="12"
@@ -52,10 +50,10 @@
                 </svg>
               </div>
               <span class="quantity">{{ quantity }}</span>
-              <button
-                :disabled="onPlusDisabled"
+              <div
                 class="cursor"
-                @click="changeQuantity('b')"
+                :class="{ disabled: quantity === 4 }"
+                @click="changeQuantity('plus')"
               >
                 <svg
                   width="12"
@@ -68,28 +66,29 @@
                     d="M12 7.52301V5.47701C12.0003 5.3925 11.9838 5.30877 11.9516 5.23063C11.9194 5.1525 11.872 5.08151 11.8123 5.02175C11.7525 4.96199 11.6815 4.91464 11.6034 4.88242C11.5253 4.8502 11.4415 4.83375 11.357 4.83401H7.66701V1.14301C7.66728 1.05833 7.65076 0.974433 7.61842 0.89617C7.58607 0.817907 7.53854 0.746829 7.47857 0.687041C7.41859 0.627254 7.34737 0.579943 7.269 0.547841C7.19064 0.51574 7.10669 0.499484 7.02201 0.500013H4.97701C4.8925 0.499748 4.80877 0.5162 4.73063 0.54842C4.6525 0.58064 4.58151 0.627993 4.52175 0.687754C4.46199 0.747515 4.41464 0.818503 4.38242 0.896635C4.3502 0.974766 4.33375 1.0585 4.33401 1.14301V4.83301H0.643013C0.558329 4.83275 0.474433 4.84926 0.39617 4.88161C0.317907 4.91395 0.246829 4.96148 0.187041 5.02146C0.127254 5.08143 0.079943 5.15266 0.0478413 5.23102C0.0157396 5.30938 -0.000516362 5.39333 1.25014e-05 5.47801V7.52401C1.25014e-05 7.88001 0.287013 8.16701 0.643013 8.16701H4.33301V11.858C4.33301 12.214 4.62101 12.501 4.97701 12.501H7.02301C7.10753 12.5013 7.19126 12.4848 7.26939 12.4526C7.34752 12.4204 7.41851 12.373 7.47827 12.3133C7.53803 12.2535 7.58538 12.1825 7.6176 12.1044C7.64983 12.0263 7.66628 11.9425 7.66601 11.858V8.16801H11.357C11.4418 8.16828 11.5258 8.15173 11.6041 8.11932C11.6824 8.08692 11.7535 8.03929 11.8133 7.97921C11.8731 7.91914 11.9204 7.84779 11.9525 7.76931C11.9845 7.69083 12.0007 7.60678 12 7.52201V7.52301Z"
                   />
                 </svg>
-              </button>
+              </div>
             </div>
 
-            <MakeupButton title="Add to cart">
+            <MakeupButton title="Add to cart" @buttonClicked="onAddToCart">
               <template v-slot:prepend>
-                <img src="@/assets/basket.svg" alt="icon" />
+                <img src="@/assets/cart.svg" alt="icon" />
               </template>
             </MakeupButton>
           </div>
         </div>
       </div>
 
-      <div v-else>No Product</div>
+      <div class="spinner d-flex justify-content-center" v-else>
+        <b-spinner variant="primary" label=""></b-spinner>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import MakeupButton from './MakeupButton.vue';
 
-const discount = 50;
 export default {
   name: 'MakeupProduct',
   components: {
@@ -97,40 +96,50 @@ export default {
   },
   data() {
     return {
-      quantity: 2,
+      quantity: 1,
+      discount: 50,
+      product: {},
     };
   },
   computed: {
-    ...mapGetters('makeup', ['getOneProduct']),
+    ...mapGetters('makeup', [
+      'getProductById',
+      'getCart',
+      'getAllProducts',
+      'getCartQuantity',
+    ]),
     currentPrice() {
-      return `${this.getOneProduct.price_sign}${this.getOneProduct.price}`;
+      return `${this.product.price_sign}${this.product.price}`;
     },
     oldPrice() {
-      return (
-        (this.getOneProduct.price * discount) / 100 +
-        Number(this.getOneProduct.price)
-      );
-    },
-    onPlusDisabled() {
-      console.log('&&&&&&', this.quantity === 3);
-      return this.quantity === 4;
-    },
-    onMinusDisabled() {
-      console.log('&&&&&&', this.quantity === 3);
-      return this.quantity === 1;
+      return (this.product.price * 100) / this.discount;
     },
   },
   methods: {
-    changeQuantity(c) {
-      if (c === 'a' && this.quantity > 1) {
+    ...mapActions('makeup', ['addToCart', 'fetchMakeupList']),
+    changeQuantity(operation) {
+      if (operation === 'minus' && this.quantity > 1) {
         this.quantity--;
-        console.log('-------', this.quantity);
       }
-      if (c === 'b' && this.quantity < 4) {
+      if (operation === 'plus' && this.quantity < 4) {
         this.quantity++;
-        console.log('-------', this.quantity);
       }
     },
+    onAddToCart() {
+      console.log('Add To Cart');
+      console.log(this.product);
+      const payload = Object.assign({}, this.product);
+      payload.quantity = this.quantity;
+      console.log(payload);
+      this.addToCart(payload);
+    },
+  },
+  async mounted() {
+    console.log('getCartQuantity getter: ', this.getCartQuantity);
+    if (!this.getAllProducts.length) {
+      await this.fetchMakeupList();
+    }
+    this.product = this.getProductById(this.$route.params.id);
   },
 };
 </script>
@@ -149,7 +158,7 @@ export default {
 .wrapper-btn {
   height: 55px;
 }
-.basket {
+.cart {
   margin-right: 195px;
   width: 22px;
   height: 20px;
@@ -246,7 +255,6 @@ export default {
 }
 .wrapper-quantity {
   align-items: center;
-  width: 157px;
   height: 100%;
   background-color: #f7f8fd;
   border-radius: 10px;
@@ -254,22 +262,33 @@ export default {
 .quantity {
   padding: 0 27px;
   font-size: 16px;
+  width: 64px;
 }
 .cursor {
-  border: none;
-  background-color: #f7f8fd;
-  // cursor: pointer;
+  cursor: pointer;
   user-select: none;
   padding: 16px 18px;
   border-radius: 10px;
-  fill: #ff7d1a;
+  width: 48px;
   & svg {
     fill: #ff7d1a;
   }
+
   &:hover {
     background-color: #ff7d1a;
     & svg {
       fill: #f7f8fd;
+    }
+  }
+
+  &.disabled {
+    opacity: 0.25;
+    cursor: initial;
+    &:hover {
+      background-color: #f7f8fd;
+      & svg {
+        fill: #ff7d1a;
+      }
     }
   }
 }

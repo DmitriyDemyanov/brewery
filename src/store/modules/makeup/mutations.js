@@ -4,5 +4,8 @@ export default {
   },
   SET_CURRENT_PAGE(state, payload) {
     state.pageNumber = payload;
-  }
+  },
+  SET_PRODUCT_LIST(state, payload) {
+    state.cart.push(payload);
+  },
 };
