@@ -4,7 +4,8 @@
 
     <header class="d-flex justify-content-between header">
       <div class="name-product">{{ product.category }}</div>
-      <div class="cart position-relative">
+
+      <div class="cart position-relative" @click="openModal('my-modal')">
         <img src="@/assets/header-icon-cart.svg" alt="icon" />
         <div class="header-icon-cart">{{ getCartQuantity }}</div>
       </div>
@@ -82,17 +83,83 @@
         <b-spinner variant="primary" label=""></b-spinner>
       </div>
     </div>
+
+    <b-modal
+      id="my-modal"
+      cancel-disabled="true"
+      ok-disabled="true"
+      centered
+      modal-class="modal-test"
+      content-class="modal-content-test"
+    >
+      <div class="wrapper-cart d-flex justify-content-between">
+        <div class="wrapper-item">
+          <img
+            class="arrow-left"
+            src="@/assets/makeup/arrow-left.svg"
+            alt="icon"
+          />
+          <span class="cart-title">Continue Shopping</span>
+          <div class="cart-bar"></div>
+          <div class="cart-subtitle">Shopping cart</div>
+          <div class="cart-description">
+            You have <span>{{ 3 }}</span> item in your cart
+          </div>
+          <MakeupCartItem />
+        </div>
+
+        <div class="wrapper-card">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="card-title">Card Details</div>
+            <div class="card-img">
+              <img src="@/assets/makeup/card-master.svg" alt="mastercard" />
+            </div>
+          </div>
+          <div class="card-subtitle">Card type</div>
+          <div class="cards-pay d-flex">
+            <img src="@/assets/makeup/card-master.svg" alt="mastercard" />
+            <img src="@/assets/makeup/card-visa.svg" alt="visa" />
+          </div>
+          <div class="card-description">Name on card</div>
+          <b-input-group class="mb-3">
+            <b-form-input></b-form-input>
+          </b-input-group>
+          <div class="card-description">Card Number</div>
+          <b-input-group class="mb-3">
+            <b-form-input></b-form-input>
+          </b-input-group>
+
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <div class="card-description">Expiration date</div>
+              <b-input-group class="mb-3 card-data">
+                <b-form-input></b-form-input>
+              </b-input-group>
+            </div>
+
+            <div>
+              <div class="card-description">CVV</div>
+              <b-input-group class="mb-3 card-data">
+                <b-form-input></b-form-input>
+              </b-input-group>
+            </div>
+          </div>
+        </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import MakeupButton from './MakeupButton.vue';
+import MakeupCartItem from './MakeupCartItem';
 
 export default {
   name: 'MakeupProduct',
   components: {
     MakeupButton,
+    MakeupCartItem,
   },
   data() {
     return {
@@ -114,6 +181,9 @@ export default {
     oldPrice() {
       return (this.product.price * 100) / this.discount;
     },
+    mockImg() {
+      return '@/assets/makeup/card-master.svg';
+    },
   },
   methods: {
     ...mapActions('makeup', ['addToCart', 'fetchMakeupList']),
@@ -124,6 +194,10 @@ export default {
       if (operation === 'plus' && this.quantity < 4) {
         this.quantity++;
       }
+    },
+    openModal(id) {
+      this.$bvModal.show(id);
+      console.log(id);
     },
     onAddToCart() {
       console.log('Add To Cart');
@@ -291,5 +365,101 @@ export default {
       }
     }
   }
+}
+::v-deep .modal-test {
+  .modal-dialog {
+    max-width: 1200px;
+  }
+  .modal-body {
+    padding: 50px 100px 50px 42px;
+  }
+  .modal-footer,
+  .modal-header {
+    display: none;
+  }
+}
+.wrapper-item {
+  width: calc(60% - 29px);
+}
+.wrapper-card {
+  width: calc(40% - 29px);
+  background-color: #565abb;
+  border-radius: 20px;
+  padding: 22px 18px 24px 18px;
+}
+.card-img {
+  width: 75px;
+  height: 55px;
+}
+.card-title {
+  // margin-bottom: 20px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 33px;
+  color: #fefcfc;
+}
+.card-subtitle {
+  margin-top: 2px;
+  margin-bottom: 20px;
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  color: #fefcfc;
+}
+.card-description {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+  color: #fefcfc;
+}
+.cards-pay {
+  & img {
+    width: 75px;
+    height: 55px;
+    margin-right: 18px;
+  }
+}
+.card-data {
+  width: calc(100% - 5px);
+}
+.arrow-left {
+  cursor: pointer;
+}
+.cart-title {
+  margin-bottom: 24px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 27px;
+  // border-bottom: 1.5px solid #D0CFCF;
+}
+.cart-bar {
+  margin-bottom: 24px;
+  width: 100%;
+  height: 1.5px;
+  background-color: #d0cfcf;
+}
+.cart-subtitle {
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+  color: #1e1e1e;
+}
+.cart-description {
+  margin-bottom: 19px;
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 19px;
+  color: #1e1e1e;
 }
 </style>
