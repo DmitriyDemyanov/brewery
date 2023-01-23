@@ -117,31 +117,78 @@
           </div>
           <div class="card-subtitle">Card type</div>
           <div class="cards-pay d-flex">
-            <img src="@/assets/makeup/card-master.svg" alt="mastercard" />
-            <img src="@/assets/makeup/card-visa.svg" alt="visa" />
+            <div class="mastercard-img position-relative">
+              <img src="@/assets/makeup/card-master.svg" alt="mastercard" />
+              <div class="img-check-mark">
+                <img src="@/assets/makeup/check-mark.svg" alt="" />
+              </div>
+            </div>
+            <div class="visacard-img position-relative">
+              <img src="@/assets/makeup/card-visa.svg" alt="visa" />
+              <div class="img-check-mark">
+                <img src="@/assets/makeup/check-mark.svg" alt="" />
+              </div>
+            </div>
           </div>
           <div class="card-description">Name on card</div>
+
           <b-input-group class="mb-3">
-            <b-form-input></b-form-input>
+            <b-form-input type="text" placeholder="Name"></b-form-input>
           </b-input-group>
           <div class="card-description">Card Number</div>
           <b-input-group class="mb-3">
-            <b-form-input></b-form-input>
+            <b-form-input
+              type="number"
+              placeholder="1111 2222 3333 4444"
+            ></b-form-input>
           </b-input-group>
 
           <div class="d-flex align-items-center justify-content-between">
             <div>
               <div class="card-description">Expiration date</div>
               <b-input-group class="mb-3 card-data">
-                <b-form-input></b-form-input>
+                <b-form-input type="text" placeholder="mm/yy"></b-form-input>
               </b-input-group>
             </div>
 
             <div>
               <div class="card-description">CVV</div>
               <b-input-group class="mb-3 card-data">
-                <b-form-input></b-form-input>
+                <b-form-input type="password" placeholder="123"></b-form-input>
               </b-input-group>
+            </div>
+          </div>
+          <div class="card-bar"></div>
+
+          <div class="wrapper-price d-flex justify-content-between mb-1">
+            <div class="card-name-item card-description">Subtotal</div>
+            <div class="card-price card-description">$ 2,352</div>
+          </div>
+
+          <div class="wrapper-price d-flex justify-content-between mb-1">
+            <div class="card-name-item card-description">Subtotal</div>
+            <div class="card-price card-description">$ 2,352</div>
+          </div>
+
+          <div class="wrapper-price d-flex justify-content-between mb-1">
+            <div class="card-name-item card-description">Subtotal</div>
+            <div class="card-price card-description">$ 2,352</div>
+          </div>
+          <div class="wrapper-price d-flex justify-content-between mb-1">
+            <div class="card-name-item card-description">Subtotal</div>
+            <div class="card-price card-description">$ 2,352</div>
+          </div>
+
+          <div
+            class="Checkout-btn d-flex justify-content-between align-items-center"
+          >
+            <div class="total-btn">$ total</div>
+
+            <div>
+              <span class="Checkout-btn-text d-flex"
+                >Checkout
+                <img src="@/assets/makeup/arrow-right.svg" alt="arrow"
+              /></span>
             </div>
           </div>
         </div>
@@ -391,6 +438,7 @@ export default {
   width: 75px;
   height: 55px;
 }
+
 .card-title {
   // margin-bottom: 20px;
   font-family: 'Poppins';
@@ -425,8 +473,45 @@ export default {
     margin-right: 18px;
   }
 }
+.img-check-mark {
+  display: none;                      ////////////////////////////////////////////////////////
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  right: 21px;
+  bottom: 8px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
 .card-data {
   width: calc(100% - 5px);
+}
+.card-bar {
+  margin-bottom: 18px;
+  width: 100%;
+  height: 1px;
+  background-color: #5f65c3;
+}
+.Checkout-btn {
+  margin-top: 8px;
+  width: 100%;
+  padding: 15px 18px 15px 24px;
+  background: #4de1c1;
+  border-radius: 12px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #fefcfc;
+  cursor: pointer;
+}
+.Checkout-btn-text {
+  & img {
+    margin-left: 5px;
+  }
 }
 .arrow-left {
   cursor: pointer;
@@ -461,5 +546,9 @@ export default {
   font-size: 14px;
   line-height: 19px;
   color: #1e1e1e;
+}
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 }
 </style>
