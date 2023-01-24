@@ -99,8 +99,11 @@
               class="arrow-left"
               src="@/assets/makeup/arrow-left.svg"
               alt="icon"
+              @click="closeModal('my-modal')"
             />
-            <span class="cart-title">Continue Shopping</span>
+            <span class="cart-title" @click="closeModal('my-modal')"
+              >Continue Shopping</span
+            >
           </span>
 
           <div class="cart-bar"></div>
@@ -127,16 +130,35 @@
           </div>
           <div class="card-subtitle">Card type</div>
           <div class="cards-pay d-flex">
-            <div class="mastercard-img position-relative">
-              <img src="@/assets/makeup/card-master.svg" alt="mastercard" />
-              <div class="img-check-mark">
+            <div
+              class="mastercard-img position-relative"
+              @click="onClassShow('master')"
+            >
+              <div class="card-pay">
+                <img
+                  :class="{ onCheck: 'd-none' }"
+                  src="@/assets/makeup/card-master.svg"
+                  alt="mastercard"
+                />
+              </div>
+              <div class="img-check-mark" :class="{ onCheck: 'd-none' }">
                 <img src="@/assets/makeup/check-mark.svg" alt="" />
               </div>
             </div>
-            <div class="visacard-img position-relative">
-              <img src="@/assets/makeup/card-visa.svg" alt="visa" />
+
+            <div
+              class="visacard-img position-relative"
+              @click="onClassShow('visa')"
+            >
+              <div class="card-pay">
+                <img src="@/assets/makeup/card-visa.svg" alt="visa" />
+              </div>
               <div class="img-check-mark">
-                <img src="@/assets/makeup/check-mark.svg" alt="" />
+                <img
+                  :class="{ onCheck: 'd-none' }"
+                  src="@/assets/makeup/check-mark.svg"
+                  alt=""
+                />
               </div>
             </div>
           </div>
@@ -176,16 +198,16 @@
           </div>
 
           <div class="wrapper-price d-flex justify-content-between mb-1">
-            <div class="card-name-item card-description">Subtotal</div>
-            <div class="card-price card-description">$ 2,352</div>
+            <div class="card-name-item card-description">Shipping</div>
+            <div class="card-price card-description">$ 17.50</div>
           </div>
 
           <div class="wrapper-price d-flex justify-content-between mb-1">
-            <div class="card-name-item card-description">Subtotal</div>
+            <div class="card-name-item card-description">Taxes</div>
             <div class="card-price card-description">$ 2,352</div>
           </div>
           <div class="wrapper-price d-flex justify-content-between mb-1">
-            <div class="card-name-item card-description">Subtotal</div>
+            <div class="card-name-item card-description">Total (Tax incl.)</div>
             <div class="card-price card-description">$ 2,352</div>
           </div>
 
@@ -223,6 +245,7 @@ export default {
       quantity: 1,
       discount: 50,
       product: {},
+      onCheck: true,
     };
   },
   computed: {
@@ -244,6 +267,7 @@ export default {
   },
   methods: {
     ...mapActions('makeup', ['addToCart', 'fetchMakeupList']),
+
     changeQuantity(operation) {
       if (operation === 'minus' && this.quantity > 1) {
         this.quantity--;
@@ -254,19 +278,28 @@ export default {
     },
     openModal(id) {
       this.$bvModal.show(id);
-      console.log(id);
+    },
+    closeModal(id) {
+      this.$bvModal.hide(id);
     },
     onAddToCart() {
-      console.log('Add To Cart');
-      console.log(this.product);
       const payload = Object.assign({}, this.product);
       payload.quantity = this.quantity;
-      console.log(payload);
       this.addToCart(payload);
+    },
+    onClassShow(el) {
+      if (el === 'master') {
+        this.onCheck = false;
+
+        console.log(this.onCheck);
+      }
+      if (el === 'visa') {
+        this.onCheck = true;
+        console.log(this.onCheck);
+      }
     },
   },
   async mounted() {
-    console.log('getCartQuantity getter: ', this.getCartQuantity);
     if (!this.getAllProducts.length) {
       await this.fetchMakeupList();
     }
@@ -476,22 +509,22 @@ export default {
   line-height: 21px;
   color: #fefcfc;
 }
-.cards-pay {
-  & img {
-    width: 75px;
-    height: 55px;
-    margin-right: 18px;
-    margin-bottom: 24px;
-  }
+
+.card-pay {
+  width: 75px;
+  height: 55px;
+  margin-right: 18px;
+  margin-bottom: 24px;
 }
+
 .img-check-mark {
-  display: none; ////////////////////////////////////////////////////////
+  // display: none; ////////////////////////////////////////////////////////
   position: absolute;
   width: 18px;
   height: 18px;
   right: 21px;
-  bottom: 8px;
-  img {
+  bottom: 32px;
+  & img {
     width: 100%;
     height: 100%;
   }
@@ -566,6 +599,7 @@ input[type='number']::-webkit-inner-spin-button {
 .product-list {
   height: 515px;
   overflow-y: auto;
+  padding: 3px;
   &::-webkit-scrollbar {
     width: 6px;
     border-radius: 3px;
