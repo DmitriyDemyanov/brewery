@@ -1,18 +1,18 @@
 <template>
   <div class="cart-item_wrapper d-flex align-items-center">
     <div class="product-image">
-      <img src="@/assets/makeup/image-test.png" alt="" />
+      <img :src="imageProduct" alt="photo" />
     </div>
 
     <div class="cart-item-text">
-      <div class="item-title">Flor amaniast Hand Creatinin Hello</div>
+      <div class="item-title">{{ product.brand }}</div>
       <div class="item-description">
-        Best aroma in the world and lot of time title
+        {{ product.description }}
       </div>
     </div>
 
     <div class="quantity-wrapper d-flex align-items-center">
-      <div class="quantity-items">{{ 5 }}</div>
+      <div class="quantity-items">{{ product.quantity }}</div>
       <div class="arrows-wrapper">
         <div class="arrow-top">
           <img src="@/assets/makeup/arrow-top.svg" alt="" />
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="item-price">$ 56768</div>
+    <div class="item-price">$ {{ product.price * product.quantity }}</div>
     <div class="trash-can">
       <img src="@/assets/makeup/trash-can.svg" alt="icon" />
     </div>
@@ -33,11 +33,28 @@
 <script>
 export default {
   name: 'MakeupCartItem',
+  props: {
+    product: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+  computed: {
+    imageProduct() {
+      console.log('Image: ', this.product.image_link);
+      return (
+        this.product.image_link || require('@/assets/makeup/image-test.png')
+      );
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .cart-item_wrapper {
+  margin-bottom: 24px;
   width: 100%;
   height: 100px;
   padding: 10px 22px 10px 9px;

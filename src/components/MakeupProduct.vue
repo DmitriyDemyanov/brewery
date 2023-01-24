@@ -86,26 +86,36 @@
 
     <b-modal
       id="my-modal"
-      cancel-disabled="true"
-      ok-disabled="true"
       centered
       modal-class="modal-test"
       content-class="modal-content-test"
     >
       <div class="wrapper-cart d-flex justify-content-between">
         <div class="wrapper-item">
-          <img
-            class="arrow-left"
-            src="@/assets/makeup/arrow-left.svg"
-            alt="icon"
-          />
-          <span class="cart-title">Continue Shopping</span>
+          <span
+            class="item-back-product d-flex align-items-center cursor-pointer"
+          >
+            <img
+              class="arrow-left"
+              src="@/assets/makeup/arrow-left.svg"
+              alt="icon"
+            />
+            <span class="cart-title">Continue Shopping</span>
+          </span>
+
           <div class="cart-bar"></div>
           <div class="cart-subtitle">Shopping cart</div>
           <div class="cart-description">
-            You have <span>{{ 3 }}</span> item in your cart
+            You have <span>{{ getCartQuantity }}</span> item in your cart
           </div>
-          <MakeupCartItem />
+
+          <div class="product-list">
+            <MakeupCartItem
+              v-for="(item, index) in getCart"
+              :product="item"
+              :key="index"
+            />
+          </div>
         </div>
 
         <div class="wrapper-card">
@@ -416,6 +426,7 @@ export default {
 ::v-deep .modal-test {
   .modal-dialog {
     max-width: 1200px;
+    height: 744px;
   }
   .modal-body {
     padding: 50px 100px 50px 42px;
@@ -440,7 +451,6 @@ export default {
 }
 
 .card-title {
-  // margin-bottom: 20px;
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 600;
@@ -471,10 +481,11 @@ export default {
     width: 75px;
     height: 55px;
     margin-right: 18px;
+    margin-bottom: 24px;
   }
 }
 .img-check-mark {
-  display: none;                      ////////////////////////////////////////////////////////
+  display: none; ////////////////////////////////////////////////////////
   position: absolute;
   width: 18px;
   height: 18px;
@@ -516,16 +527,17 @@ export default {
 .arrow-left {
   cursor: pointer;
 }
+
 .cart-title {
-  margin-bottom: 24px;
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
   line-height: 27px;
-  // border-bottom: 1.5px solid #D0CFCF;
+  cursor: pointer;
 }
 .cart-bar {
+  margin-top: 24px;
   margin-bottom: 24px;
   width: 100%;
   height: 1.5px;
@@ -550,5 +562,22 @@ export default {
 input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
+}
+.product-list {
+  height: 515px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 6px;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    width: 6px;
+    border-radius: 3px;
+    background-color: #bbbcd1;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #5f65c3;
+    border-radius: 3px;
+  }
 }
 </style>

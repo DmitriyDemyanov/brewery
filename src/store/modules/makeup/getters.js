@@ -36,9 +36,8 @@ export default {
   },
   getCartQuantity({ cart }) {
     // cart - []
-    return cart.reduce(function (acc, current) {
+    return cart.reduce((acc, current) => {
       acc += current.quantity;
-      console.log('######', cart);
       return acc;
     }, 0);
   },
