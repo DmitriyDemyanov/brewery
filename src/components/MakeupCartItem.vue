@@ -23,7 +23,9 @@
       </div>
     </div>
 
-    <div class="item-price">$ {{ product.price * product.quantity }}</div>
+    <div class="item-price">
+      $ {{ (product.price * product.quantity).toFixed(2) }}
+    </div>
     <div class="trash-can" @click="removeFromCard(product.id)">
       <img src="@/assets/makeup/trash-can.svg" alt="icon" />
     </div>

@@ -69,12 +69,13 @@
                 </svg>
               </div>
             </div>
-
-            <MakeupButton title="Add to cart" @buttonClicked="onAddToCart">
-              <template v-slot:prepend>
-                <img src="@/assets/cart.svg" alt="icon" />
-              </template>
-            </MakeupButton>
+            <div @click="openModal('cart-modal')">
+              <MakeupButton title="Add to cart" @buttonClicked="onAddToCart">
+                <template v-slot:prepend>
+                  <img src="@/assets/cart.svg" alt="icon" />
+                </template>
+              </MakeupButton>
+            </div>
           </div>
         </div>
       </div>
