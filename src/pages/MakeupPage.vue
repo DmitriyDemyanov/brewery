@@ -30,7 +30,14 @@
             {{ option.text }}
           </option>
         </select>
-        <div class="select-test">Selected: {{ selected }}</div>
+
+        <div class="select-test" @click="openCart()">
+          <div class="cart position-relative">
+            <img src="@/assets/header-icon-cart.svg" alt="icon" />
+            <div class="header-icon-cart">{{ getCartQuantity }}</div>
+          </div>
+          <CartModal />
+        </div>
       </nav>
 
       <div
@@ -63,12 +70,15 @@
 
 <script>
 import MakeUpItem from '@/components/MakeupItem';
+import CartModal from '@/components/CartModal';
+
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'MakeupPage',
   components: {
     MakeUpItem,
+    CartModal,
   },
   data() {
     return {
@@ -94,6 +104,7 @@ export default {
       'getNumberPages',
       'getCurrentPage',
       'getAllLength',
+      'getCartQuantity',
     ]),
     rows() {
       return this.getAllProducts.length;
@@ -112,6 +123,9 @@ export default {
     ...mapActions('makeup', ['fetchMakeupList', 'changePage']),
     onSwitchPage(val) {
       console.log('On Switch Page', val);
+    },
+    openCart() {
+      this.$bvModal.show('cart-modal');
     },
   },
   mounted() {
@@ -168,5 +182,20 @@ export default {
 }
 .spinner {
   margin-top: 100px;
+}
+.cart {
+  cursor: pointer;
+}
+.header-icon-cart {
+  position: absolute;
+  left: 10px;
+  bottom: 9px;
+  padding: 1px 7px;
+  background: #ff7d1a;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 10px;
+  line-height: 12px;
+  color: #ffede0;
 }
 </style>

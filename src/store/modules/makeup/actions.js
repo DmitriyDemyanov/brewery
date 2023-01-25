@@ -46,4 +46,5 @@ export default {
   changeQuantity({ commit }, payload) {
     commit('CHANGE_QUANTITY', payload);
   },
+ 
 };

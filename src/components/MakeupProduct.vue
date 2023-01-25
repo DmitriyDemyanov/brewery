@@ -5,7 +5,7 @@
     <header class="d-flex justify-content-between header">
       <div class="name-product">{{ product.category }}</div>
 
-      <div class="cart position-relative" @click="openModal('my-modal')">
+      <div class="cart position-relative" @click="openModal('cart-modal')">
         <img src="@/assets/header-icon-cart.svg" alt="icon" />
         <div class="header-icon-cart">{{ getCartQuantity }}</div>
       </div>
@@ -84,169 +84,20 @@
       </div>
     </div>
 
-    <b-modal
-      id="my-modal"
-      centered
-      modal-class="modal-test"
-      content-class="modal-content-test"
-    >
-      <div class="wrapper-cart d-flex justify-content-between">
-        <div class="wrapper-item">
-          <span
-            class="item-back-product d-flex align-items-center cursor-pointer"
-          >
-            <img
-              class="arrow-left"
-              src="@/assets/makeup/arrow-left.svg"
-              alt="icon"
-              @click="closeModal('my-modal')"
-            />
-            <span class="cart-title" @click="closeModal('my-modal')"
-              >Continue Shopping</span
-            >
-          </span>
-
-          <div class="cart-bar"></div>
-          <div class="cart-subtitle">Shopping cart</div>
-          <div class="cart-description">
-            You have <span>{{ getCartQuantity }}</span> item in your cart
-          </div>
-
-          <div class="product-list">
-            <MakeupCartItem
-              v-for="(item, index) in getCart"
-              :product="item"
-              :key="index"
-            />
-          </div>
-        </div>
-
-        <div class="wrapper-card">
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="card-title">Card Details</div>
-            <div class="card-img">
-              <img :src="changeCard" alt="pay-card" v-if="changeCard" />
-            </div>
-          </div>
-          <div class="card-subtitle">Card type</div>
-          <div class="cards-pay d-flex">
-            <div
-              class="mastercard-img position-relative"
-              @click="selectCard('master')"
-            >
-              <div class="card-pay">
-                <img src="@/assets/makeup/card-master.svg" alt="mastercard" />
-              </div>
-              <div :class="{ 'd-none': cardType !== 'master' }">
-                <img
-                  class="img-check-mark"
-                  src="@/assets/makeup/check-mark.svg"
-                  alt=""
-                />
-              </div>
-            </div>
-
-            <div
-              class="visacard-img position-relative"
-              @click="selectCard('visa')"
-            >
-              <div class="card-pay">
-                <img src="@/assets/makeup/card-visa.svg" alt="visa" />
-              </div>
-              <div :class="{ 'd-none': cardType !== 'visa' }">
-                <img
-                  class="img-check-mark"
-                  src="@/assets/makeup/check-mark.svg"
-                  alt=""
-                />
-              </div>
-            </div>
-          </div>
-          <div class="card-description">Name on card</div>
-
-          <b-input-group class="mb-3">
-            <b-form-input type="text" placeholder="Name"></b-form-input>
-          </b-input-group>
-          <div class="card-description">Card Number</div>
-          <b-input-group class="mb-3">
-            <b-form-input
-              type="number"
-              placeholder="1111 2222 3333 4444"
-            ></b-form-input>
-          </b-input-group>
-
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <div class="card-description">Expiration date</div>
-              <b-input-group class="mb-3 card-data">
-                <b-form-input type="text" placeholder="mm/yy"></b-form-input>
-              </b-input-group>
-            </div>
-
-            <div>
-              <div class="card-description">CVV</div>
-              <b-input-group class="mb-3 card-data">
-                <b-form-input type="password" placeholder="123"></b-form-input>
-              </b-input-group>
-            </div>
-          </div>
-          <div class="card-bar"></div>
-
-          <div class="wrapper-price d-flex justify-content-between mb-1">
-            <div class="card-name-item card-description">Subtotal</div>
-            <div class="card-price card-description">
-              $ {{ cartSubtotal.toFixed(2) }}
-            </div>
-          </div>
-
-          <div class="wrapper-price d-flex justify-content-between mb-1">
-            <div class="card-name-item card-description">Shipping</div>
-            <div class="card-price card-description">
-              $ {{ shipping.toFixed(2) }}
-            </div>
-          </div>
-
-          <div class="wrapper-price d-flex justify-content-between mb-1">
-            <div class="card-name-item card-description">Taxes</div>
-            <div class="card-price card-description">
-              $ {{ cartTaxes.toFixed(2) }}
-            </div>
-          </div>
-          <div class="wrapper-price d-flex justify-content-between mb-1">
-            <div class="card-name-item card-description">Total (Tax incl.)</div>
-            <div class="card-price card-description">
-              $ {{ cartTotal.toFixed(2) }}
-            </div>
-          </div>
-
-          <div
-            class="checkout-btn d-flex justify-content-between align-items-center"
-          >
-            <div class="total-btn">$ {{ cartTotal.toFixed(2) }}</div>
-
-            <div>
-              <span class="checkout-btn-text d-flex"
-                >Checkout
-                <img src="@/assets/makeup/arrow-right.svg" alt="arrow"
-              /></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </b-modal>
+    <CartModal />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import MakeupButton from './MakeupButton.vue';
-import MakeupCartItem from './MakeupCartItem';
+import CartModal from './CartModal';
 
 export default {
   name: 'MakeupProduct',
   components: {
     MakeupButton,
-    MakeupCartItem,
+    CartModal,
   },
   data() {
     return {
@@ -472,167 +323,6 @@ export default {
         fill: #ff7d1a;
       }
     }
-  }
-}
-::v-deep .modal-test {
-  .modal-dialog {
-    max-width: 1200px;
-    height: 744px;
-  }
-  .modal-body {
-    padding: 50px 100px 50px 42px;
-  }
-  .modal-footer,
-  .modal-header {
-    display: none;
-  }
-}
-.wrapper-item {
-  width: calc(60% - 29px);
-}
-.wrapper-card {
-  width: calc(40% - 29px);
-  height: 644px;
-  background-color: #565abb;
-  border-radius: 20px;
-  padding: 22px 18px 24px 18px;
-  display: flex;
-  flex-direction: column;
-}
-.card-img {
-  width: 75px;
-  height: 55px;
-}
-
-.card-title {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 22px;
-  line-height: 33px;
-  color: #fefcfc;
-}
-.card-subtitle {
-  margin-top: 2px;
-  margin-bottom: 20px;
-  font-family: 'Nunito';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 22px;
-  color: #fefcfc;
-}
-.card-description {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 21px;
-  color: #fefcfc;
-}
-
-.card-pay {
-  width: 75px;
-  height: 55px;
-  margin-right: 18px;
-  margin-bottom: 24px;
-}
-
-.img-check-mark {
-  // display: none; ////////////////////////////////////////////////////////
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  right: 21px;
-  bottom: 32px;
-  & img {
-    width: 100%;
-    height: 100%;
-  }
-}
-.card-data {
-  width: calc(100% - 5px);
-}
-.card-bar {
-  margin-bottom: 18px;
-  width: 100%;
-  height: 1px;
-  background-color: #5f65c3;
-}
-.checkout-btn {
-  margin-top: auto;
-  width: 100%;
-  padding: 15px 18px 15px 24px;
-  background: #4de1c1;
-  border-radius: 12px;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  color: #fefcfc;
-  cursor: pointer;
-}
-.checkout-btn-text {
-  & img {
-    margin-left: 5px;
-  }
-}
-.arrow-left {
-  cursor: pointer;
-}
-
-.cart-title {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 27px;
-  cursor: pointer;
-}
-.cart-bar {
-  margin-top: 24px;
-  margin-bottom: 24px;
-  width: 100%;
-  height: 1.5px;
-  background-color: #d0cfcf;
-}
-.cart-subtitle {
-  margin-bottom: 8px;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 27px;
-  color: #1e1e1e;
-}
-.cart-description {
-  margin-bottom: 19px;
-  font-family: 'Nunito';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 19px;
-  color: #1e1e1e;
-}
-input[type='number']::-webkit-outer-spin-button,
-input[type='number']::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
-.product-list {
-  height: 515px;
-  overflow-y: auto;
-  padding: 3px;
-  &::-webkit-scrollbar {
-    width: 6px;
-    border-radius: 3px;
-  }
-  &::-webkit-scrollbar-track {
-    width: 6px;
-    border-radius: 3px;
-    background-color: #bbbcd1;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #5f65c3;
-    border-radius: 3px;
   }
 }
 </style>
