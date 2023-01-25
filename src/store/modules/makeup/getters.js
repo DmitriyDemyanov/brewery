@@ -41,4 +41,11 @@ export default {
       return acc;
     }, 0);
   },
+  cartSubtotal({ cart }) {
+    return cart.reduce((acc, current) => {
+      acc += current.quantity * current.price;
+      return acc;
+    }, 0);
+  },
+ 
 };

@@ -28,7 +28,22 @@ export default {
     }
 
     commit('SET_CART', cart);
-
-    localStorage.setItem('makeupCart', JSON.stringify(cart));
+  },
+  removeFromCard({ commit, getters }, id) {
+    const cart = [...getters.getCart];
+    const changedCart = cart.filter((product) => product.id !== id);
+    commit('SET_CART', changedCart);
+  },
+  // changeQuantity2({ commit, getters }, payload) {
+  //   const { id, quantity } = payload;
+  //   const cart = [...getters.getCart];
+  //   const idx = cart.findIndex((el) => el.id === id);
+  //   const newProduct = cart[idx];
+  //   newProduct.quantity = quantity;
+  //   cart.splice(idx, 1, newProduct);
+  //   commit('SET_CART', cart);
+  // },
+  changeQuantity({ commit }, payload) {
+    commit('CHANGE_QUANTITY', payload);
   },
 };

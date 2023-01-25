@@ -14,23 +14,25 @@
     <div class="quantity-wrapper d-flex align-items-center">
       <div class="quantity-items">{{ product.quantity }}</div>
       <div class="arrows-wrapper">
-        <div class="arrow-top">
+        <div class="arrow-top" @click="onIncrease">
           <img src="@/assets/makeup/arrow-top.svg" alt="" />
         </div>
-        <div class="arrow-bottom">
+        <div class="arrow-bottom" @click="onDecrease">
           <img src="@/assets/makeup/arrow-bottom.svg" alt="" />
         </div>
       </div>
     </div>
 
     <div class="item-price">$ {{ product.price * product.quantity }}</div>
-    <div class="trash-can">
+    <div class="trash-can" @click="removeFromCard(product.id)">
       <img src="@/assets/makeup/trash-can.svg" alt="icon" />
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'MakeupCartItem',
   props: {
@@ -43,10 +45,26 @@ export default {
   },
   computed: {
     imageProduct() {
-      console.log('Image: ', this.product.image_link);
       return (
         this.product.image_link || require('@/assets/makeup/image-test.png')
       );
+    },
+  },
+  methods: {
+    ...mapActions('makeup', ['removeFromCard', 'changeQuantity']),
+    onIncrease() {
+      const payload = {
+        id: this.product.id,
+        quantity: this.product.quantity + 1,
+      };
+      this.changeQuantity(payload);
+    },
+    onDecrease() {
+      const payload = {
+        id: this.product.id,
+        quantity: this.product.quantity - 1,
+      };
+      this.changeQuantity(payload);
     },
   },
 };
@@ -85,11 +103,13 @@ export default {
     font-weight: 500;
     font-size: 18px;
     line-height: 27px;
+    text-transform: uppercase;
   }
   .item-description {
     font-family: 'Nunito';
     font-size: 14px;
     line-height: 19px;
+    text-transform: lowercase;
   }
 }
 .quantity-items {

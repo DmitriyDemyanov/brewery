@@ -125,37 +125,37 @@
           <div class="d-flex justify-content-between align-items-center">
             <div class="card-title">Card Details</div>
             <div class="card-img">
-              <img src="@/assets/makeup/card-master.svg" alt="mastercard" />
+              <img :src="changeCard" alt="pay-card" v-if="changeCard" />
             </div>
           </div>
           <div class="card-subtitle">Card type</div>
           <div class="cards-pay d-flex">
             <div
               class="mastercard-img position-relative"
-              @click="onClassShow('master')"
+              @click="selectCard('master')"
             >
               <div class="card-pay">
-                <img
-                  :class="{ onCheck: 'd-none' }"
-                  src="@/assets/makeup/card-master.svg"
-                  alt="mastercard"
-                />
+                <img src="@/assets/makeup/card-master.svg" alt="mastercard" />
               </div>
-              <div class="img-check-mark" :class="{ onCheck: 'd-none' }">
-                <img src="@/assets/makeup/check-mark.svg" alt="" />
+              <div :class="{ 'd-none': cardType !== 'master' }">
+                <img
+                  class="img-check-mark"
+                  src="@/assets/makeup/check-mark.svg"
+                  alt=""
+                />
               </div>
             </div>
 
             <div
               class="visacard-img position-relative"
-              @click="onClassShow('visa')"
+              @click="selectCard('visa')"
             >
               <div class="card-pay">
                 <img src="@/assets/makeup/card-visa.svg" alt="visa" />
               </div>
-              <div class="img-check-mark">
+              <div :class="{ 'd-none': cardType !== 'visa' }">
                 <img
-                  :class="{ onCheck: 'd-none' }"
+                  class="img-check-mark"
                   src="@/assets/makeup/check-mark.svg"
                   alt=""
                 />
@@ -194,30 +194,38 @@
 
           <div class="wrapper-price d-flex justify-content-between mb-1">
             <div class="card-name-item card-description">Subtotal</div>
-            <div class="card-price card-description">$ 2,352</div>
+            <div class="card-price card-description">
+              $ {{ cartSubtotal.toFixed(2) }}
+            </div>
           </div>
 
           <div class="wrapper-price d-flex justify-content-between mb-1">
             <div class="card-name-item card-description">Shipping</div>
-            <div class="card-price card-description">$ 17.50</div>
+            <div class="card-price card-description">
+              $ {{ shipping.toFixed(2) }}
+            </div>
           </div>
 
           <div class="wrapper-price d-flex justify-content-between mb-1">
             <div class="card-name-item card-description">Taxes</div>
-            <div class="card-price card-description">$ 2,352</div>
+            <div class="card-price card-description">
+              $ {{ cartTaxes.toFixed(2) }}
+            </div>
           </div>
           <div class="wrapper-price d-flex justify-content-between mb-1">
             <div class="card-name-item card-description">Total (Tax incl.)</div>
-            <div class="card-price card-description">$ 2,352</div>
+            <div class="card-price card-description">
+              $ {{ cartTotal.toFixed(2) }}
+            </div>
           </div>
 
           <div
-            class="Checkout-btn d-flex justify-content-between align-items-center"
+            class="checkout-btn d-flex justify-content-between align-items-center"
           >
-            <div class="total-btn">$ total</div>
+            <div class="total-btn">$ {{ cartTotal.toFixed(2) }}</div>
 
             <div>
-              <span class="Checkout-btn-text d-flex"
+              <span class="checkout-btn-text d-flex"
                 >Checkout
                 <img src="@/assets/makeup/arrow-right.svg" alt="arrow"
               /></span>
@@ -245,7 +253,9 @@ export default {
       quantity: 1,
       discount: 50,
       product: {},
-      onCheck: true,
+      cardType: null,
+      shipping: 17.5,
+      taxes: 5,
     };
   },
   computed: {
@@ -254,6 +264,7 @@ export default {
       'getCart',
       'getAllProducts',
       'getCartQuantity',
+      'cartSubtotal',
     ]),
     currentPrice() {
       return `${this.product.price_sign}${this.product.price}`;
@@ -263,6 +274,21 @@ export default {
     },
     mockImg() {
       return '@/assets/makeup/card-master.svg';
+    },
+    changeCard() {
+      if (this.cardType === 'visa') {
+        return require('@/assets/makeup/card-visa.svg');
+      }
+      if (this.cardType === 'master') {
+        return require('@/assets/makeup/card-master.svg');
+      }
+      return null;
+    },
+    cartTaxes() {
+      return (this.cartSubtotal * this.taxes) / 100;
+    },
+    cartTotal() {
+      return this.cartSubtotal + this.shipping + this.cartTaxes;
     },
   },
   methods: {
@@ -287,16 +313,8 @@ export default {
       payload.quantity = this.quantity;
       this.addToCart(payload);
     },
-    onClassShow(el) {
-      if (el === 'master') {
-        this.onCheck = false;
-
-        console.log(this.onCheck);
-      }
-      if (el === 'visa') {
-        this.onCheck = true;
-        console.log(this.onCheck);
-      }
+    selectCard(type) {
+      this.cardType = type;
     },
   },
   async mounted() {
@@ -474,9 +492,12 @@ export default {
 }
 .wrapper-card {
   width: calc(40% - 29px);
+  height: 644px;
   background-color: #565abb;
   border-radius: 20px;
   padding: 22px 18px 24px 18px;
+  display: flex;
+  flex-direction: column;
 }
 .card-img {
   width: 75px;
@@ -538,8 +559,8 @@ export default {
   height: 1px;
   background-color: #5f65c3;
 }
-.Checkout-btn {
-  margin-top: 8px;
+.checkout-btn {
+  margin-top: auto;
   width: 100%;
   padding: 15px 18px 15px 24px;
   background: #4de1c1;
@@ -552,7 +573,7 @@ export default {
   color: #fefcfc;
   cursor: pointer;
 }
-.Checkout-btn-text {
+.checkout-btn-text {
   & img {
     margin-left: 5px;
   }
