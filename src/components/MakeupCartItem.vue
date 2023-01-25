@@ -1,8 +1,9 @@
 <template>
   <div class="cart-item_wrapper d-flex align-items-center">
-    <div class="product-image">
-      <img :src="imageProduct" alt="photo" />
-    </div>
+    <a target="_blank" :href="product.product_link"
+      ><div class="product-image">
+        <img :src="imageProduct" alt="photo" /></div
+    ></a>
 
     <div class="cart-item-text">
       <div class="item-title">{{ product.brand }}</div>
@@ -88,6 +89,7 @@ export default {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 8px;
   }
 }
 .cart-item-text {
