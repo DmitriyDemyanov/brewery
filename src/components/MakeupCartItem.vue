@@ -24,9 +24,7 @@
       </div>
     </div>
 
-    <div class="item-price">
-      $ {{ (product.price * product.quantity).toFixed(2) }}
-    </div>
+    <div class="item-price">$ {{ priceItems }}</div>
     <div class="trash-can" @click="removeFromCard(product.id)">
       <img src="@/assets/makeup/trash-can.svg" alt="icon" />
     </div>
@@ -51,6 +49,9 @@ export default {
       return (
         this.product.image_link || require('@/assets/makeup/image-test.png')
       );
+    },
+    priceItems() {
+      return (this.product.price * this.product.quantity).toFixed(2);
     },
   },
   methods: {
