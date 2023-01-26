@@ -266,6 +266,7 @@ export default {
     },
     async orderProducts() {
       // ToDo - 1 - start global spinner
+      
       const payload = {
         card: { ...this.cardInfo },
         products: this.getCart.map((product) => {
@@ -282,7 +283,7 @@ export default {
       if (response.Status === 'OK') {
         console.log('Success');
         // ToDo - 2 - show success modal message
-        this.setInfoMessage('pay confirmed');
+        this.setInfoMessage('pay Success');
         this.$bvModal.show('info-modal');
         // ToDo - 3 - hide and clear cart and card info
       } else {
