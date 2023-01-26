@@ -242,12 +242,8 @@ export default {
     },
   },
   methods: {
-    ...mapActions('makeup', [
-      'addToCart',
-      'fetchMakeupList',
-      'sendOrder',
-      'setInfoMessage',
-    ]),
+    ...mapActions(['setInfoMessage']),
+    ...mapActions('makeup', ['addToCart', 'fetchMakeupList', 'sendOrder']),
 
     changeQuantity(operation) {
       if (operation === 'minus' && this.quantity > 1) {
