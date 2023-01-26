@@ -124,24 +124,6 @@ export default {
     oldPrice() {
       return (this.product.price * 100) / this.discount;
     },
-    mockImg() {
-      return '@/assets/makeup/card-master.svg';
-    },
-    changeCard() {
-      if (this.cardType === 'visa') {
-        return require('@/assets/makeup/card-visa.svg');
-      }
-      if (this.cardType === 'master') {
-        return require('@/assets/makeup/card-master.svg');
-      }
-      return null;
-    },
-    cartTaxes() {
-      return (this.cartSubtotal * this.taxes) / 100;
-    },
-    cartTotal() {
-      return this.cartSubtotal + this.shipping + this.cartTaxes;
-    },
   },
   methods: {
     ...mapActions('makeup', ['addToCart', 'fetchMakeupList']),
@@ -174,7 +156,7 @@ export default {
       await this.fetchMakeupList();
     }
     this.product = this.getProductById(this.$route.params.id);
-  },
+  }
 };
 </script>
 

@@ -1,9 +1,9 @@
 <template>
   <div class="cart-item_wrapper d-flex align-items-center">
-    <a target="_blank" :href="product.product_link"
+    <router-link :to="`/makeup/${product.id}`"
       ><div class="product-image">
         <img :src="imageProduct" alt="photo" /></div
-    ></a>
+    ></router-link>
 
     <div class="cart-item-text">
       <div class="item-title">{{ product.brand }}</div>

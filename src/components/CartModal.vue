@@ -1,6 +1,6 @@
 <template>
   <div>
-     <b-modal
+    <b-modal
       id="cart-modal"
       centered
       modal-class="modal-test"
@@ -50,7 +50,7 @@
               class="mastercard-img position-relative"
               @click="selectCard('master')"
             >
-              <div class="card-pay">
+              <div class="card-type">
                 <img src="@/assets/makeup/card-master.svg" alt="mastercard" />
               </div>
               <div :class="{ 'd-none': cardType !== 'master' }">
@@ -66,7 +66,7 @@
               class="visacard-img position-relative"
               @click="selectCard('visa')"
             >
-              <div class="card-pay">
+              <div class="card-type">
                 <img src="@/assets/makeup/card-visa.svg" alt="visa" />
               </div>
               <div :class="{ 'd-none': cardType !== 'visa' }">
@@ -78,16 +78,22 @@
               </div>
             </div>
           </div>
-          <div class="card-description">Name on card</div>
 
+          <div class="card-description">Name on card</div>
           <b-input-group class="mb-3">
-            <b-form-input type="text" placeholder="Name"></b-form-input>
+            <b-form-input
+              type="text"
+              placeholder="Name"
+              v-model="cardInfo.name"
+            ></b-form-input>
           </b-input-group>
+
           <div class="card-description">Card Number</div>
           <b-input-group class="mb-3">
             <b-form-input
               type="number"
               placeholder="1111 2222 3333 4444"
+              v-model="cardInfo.number"
             ></b-form-input>
           </b-input-group>
 
@@ -95,17 +101,26 @@
             <div>
               <div class="card-description">Expiration date</div>
               <b-input-group class="mb-3 card-data">
-                <b-form-input type="text" placeholder="mm/yy"></b-form-input>
+                <b-form-input
+                  type="text"
+                  placeholder="mm/yy"
+                  v-model="cardInfo.expiration"
+                ></b-form-input>
               </b-input-group>
             </div>
 
             <div>
               <div class="card-description">CVV</div>
               <b-input-group class="mb-3 card-data">
-                <b-form-input type="password" placeholder="123"></b-form-input>
+                <b-form-input
+                  type="password"
+                  placeholder="123"
+                  v-model="cardInfo.cvv"
+                ></b-form-input>
               </b-input-group>
             </div>
           </div>
+
           <div class="card-bar"></div>
 
           <div class="wrapper-price d-flex justify-content-between mb-1">
@@ -137,6 +152,8 @@
 
           <div
             class="checkout-btn d-flex justify-content-between align-items-center"
+            :class="{ active: isCardInfoValid }"
+            @click="orderProducts"
           >
             <div class="total-btn">$ {{ cartTotal.toFixed(2) }}</div>
 
@@ -150,24 +167,20 @@
         </div>
       </div>
     </b-modal>
-
   </div>
 </template>
 
 <script>
-
 import { mapActions, mapGetters } from 'vuex';
 
 import MakeupCartItem from './MakeupCartItem';
-
-
 
 export default {
   name: 'CartModal',
   components: {
     MakeupCartItem,
   },
-   data() {
+  data() {
     return {
       quantity: 1,
       discount: 50,
@@ -175,6 +188,12 @@ export default {
       cardType: null,
       shipping: 17.5,
       taxes: 5,
+      cardInfo: {
+        name: '',
+        number: '',
+        expiration: '',
+        cvv: '',
+      },
     };
   },
   computed: {
@@ -209,9 +228,21 @@ export default {
     cartTotal() {
       return this.cartSubtotal + this.shipping + this.cartTaxes;
     },
+    isCardInfoValid() {
+      return true;
+      /*if (
+        this.cardInfo.name.length >= 3 &&
+        this.cardInfo.number.length === 16 &&
+        this.cardInfo.expiration &&
+        this.cardInfo.cvv.length === 3
+      ) {
+        return true;
+      }
+      return false;*/
+    },
   },
   methods: {
-    ...mapActions('makeup', ['addToCart', 'fetchMakeupList']),
+    ...mapActions('makeup', ['addToCart', 'fetchMakeupList', 'sendOrder']),
 
     changeQuantity(operation) {
       if (operation === 'minus' && this.quantity > 1) {
@@ -232,6 +263,30 @@ export default {
     selectCard(type) {
       this.cardType = type;
     },
+    async orderProducts() {
+      // ToDo - 1 - start global spinner
+      const payload = {
+        card: { ...this.cardInfo },
+        products: this.getCart.map((product) => {
+          console.log('P in C: ', product);
+          return {
+            id: product.id,
+            quantity: product.quantity,
+          };
+        }),
+      };
+      console.log('payload', payload);
+      const response = await this.sendOrder(payload);
+      console.log('Response: ',response);
+      if (response.Status === "OK") {
+        console.log("Success");
+        // ToDo - 2 - show success modal message
+        // ToDo - 3 - hide and clear cart and card info
+      } else {
+        // ToDo - 2 - show failed modal message
+      }
+      // ToDo - 1 - stop global spinner
+    },
   },
   async mounted() {
     if (!this.getAllProducts.length) {
@@ -241,17 +296,13 @@ export default {
   },
 };
 
+// const pr = {
+//   id: 1048,
+//   quantity: 5
+// }
 </script>
 
-
-
-
-
-
-
-<style lang='scss' scoped>
-
-
+<style lang="scss" scoped>
 ::v-deep .modal-test {
   .modal-dialog {
     max-width: 1200px;
@@ -267,6 +318,24 @@ export default {
 }
 .wrapper-item {
   width: calc(60% - 29px);
+  .product-list {
+    height: 492px;
+    overflow-y: auto;
+    padding: 3px;
+    &::-webkit-scrollbar {
+      width: 6px;
+      border-radius: 3px;
+    }
+    &::-webkit-scrollbar-track {
+      width: 6px;
+      border-radius: 3px;
+      background-color: #bbbcd1;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #5f65c3;
+      border-radius: 3px;
+    }
+  }
 }
 .wrapper-card {
   width: calc(40% - 29px);
@@ -276,57 +345,57 @@ export default {
   padding: 22px 18px 24px 18px;
   display: flex;
   flex-direction: column;
-}
-.card-img {
-  width: 75px;
-  height: 55px;
-}
+  .card-title {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 33px;
+    color: #fefcfc;
+  }
+  .card-subtitle {
+    margin-top: 2px;
+    margin-bottom: 20px;
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    color: #fefcfc;
+  }
+  .card-description {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: #fefcfc;
+  }
+  .card-img {
+    width: 75px;
+    height: 55px;
+  }
 
-.card-title {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 22px;
-  line-height: 33px;
-  color: #fefcfc;
-}
-.card-subtitle {
-  margin-top: 2px;
-  margin-bottom: 20px;
-  font-family: 'Nunito';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 22px;
-  color: #fefcfc;
-}
-.card-description {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 21px;
-  color: #fefcfc;
-}
+  .card-type {
+    width: 75px;
+    height: 55px;
+    margin-right: 18px;
+    margin-bottom: 24px;
 
-.card-pay {
-  width: 75px;
-  height: 55px;
-  margin-right: 18px;
-  margin-bottom: 24px;
-}
-
-.img-check-mark {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  right: 21px;
-  bottom: 32px;
-  & img {
-    width: 100%;
-    height: 100%;
+    .img-check-mark {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      right: 21px;
+      bottom: 32px;
+      & img {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
 }
+
 .card-data {
   width: calc(100% - 5px);
 }
@@ -336,25 +405,7 @@ export default {
   height: 1px;
   background-color: #5f65c3;
 }
-.checkout-btn {
-  margin-top: auto;
-  width: 100%;
-  padding: 15px 18px 15px 24px;
-  background: #4de1c1;
-  border-radius: 12px;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  color: #fefcfc;
-  cursor: pointer;
-}
-.checkout-btn-text {
-  & img {
-    margin-left: 5px;
-  }
-}
+
 .arrow-left {
   cursor: pointer;
 }
@@ -394,23 +445,29 @@ input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
-.product-list {
-  height: 515px;
-  overflow-y: auto;
-  padding: 3px;
-  &::-webkit-scrollbar {
-    width: 6px;
-    border-radius: 3px;
+
+.checkout-btn {
+  margin-top: auto;
+  width: 100%;
+  padding: 15px 18px 15px 24px;
+  background: #ccc;
+  border-radius: 12px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #fefcfc;
+  cursor: pointer;
+
+  &.active {
+    background: #4de1c1;
   }
-  &::-webkit-scrollbar-track {
-    width: 6px;
-    border-radius: 3px;
-    background-color: #bbbcd1;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #5f65c3;
-    border-radius: 3px;
+
+  &-text {
+    img {
+      margin-left: 5px;
+    }
   }
 }
-
 </style>

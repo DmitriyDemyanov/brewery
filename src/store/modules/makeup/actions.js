@@ -1,4 +1,8 @@
+import { sendRequestOnServer } from "@/server/makeup";
+
 const API_URL = 'http://makeup-api.herokuapp.com/api/v1/products.json';
+
+
 
 export default {
   async fetchMakeupList(ctx) {
@@ -46,5 +50,9 @@ export default {
   changeQuantity({ commit }, payload) {
     commit('CHANGE_QUANTITY', payload);
   },
- 
+  async sendOrder(ctx, payload) {
+    const result = await sendRequestOnServer(payload);
+    console.log(result);
+    return result;
+  }
 };
