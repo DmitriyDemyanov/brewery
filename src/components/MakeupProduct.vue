@@ -86,6 +86,7 @@
     </div>
 
     <CartModal />
+    <GlobalSpinner />
   </div>
 </template>
 
@@ -93,12 +94,14 @@
 import { mapActions, mapGetters } from 'vuex';
 import MakeupButton from './MakeupButton.vue';
 import CartModal from './CartModal';
+import GlobalSpinner from './GlobalSpinner';
 
 export default {
   name: 'MakeupProduct',
   components: {
     MakeupButton,
     CartModal,
+    GlobalSpinner,
   },
   data() {
     return {
@@ -156,7 +159,7 @@ export default {
       await this.fetchMakeupList();
     }
     this.product = this.getProductById(this.$route.params.id);
-  }
+  },
 };
 </script>
 

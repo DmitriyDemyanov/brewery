@@ -266,7 +266,8 @@ export default {
     },
     async orderProducts() {
       // ToDo - 1 - start global spinner
-      
+
+      this.$bvModal.show('global-spinner');
       const payload = {
         card: { ...this.cardInfo },
         products: this.getCart.map((product) => {
@@ -285,11 +286,14 @@ export default {
         // ToDo - 2 - show success modal message
         this.setInfoMessage('pay Success');
         this.$bvModal.show('info-modal');
+
         // ToDo - 3 - hide and clear cart and card info
       } else {
         // ToDo - 2 - show failed modal message
       }
       // ToDo - 1 - stop global spinner
+
+      this.$bvModal.hide('global-spinner');
     },
   },
   async mounted() {

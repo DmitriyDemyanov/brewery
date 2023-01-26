@@ -65,12 +65,14 @@
         ></b-pagination>
       </div>
     </div>
+    <GlobalSpinner/>
   </div>
 </template>
 
 <script>
 import MakeUpItem from '@/components/MakeupItem';
 import CartModal from '@/components/CartModal';
+import GlobalSpinner from '@/components/GlobalSpinner.vue'
 
 import { mapActions, mapGetters } from 'vuex';
 
@@ -79,6 +81,7 @@ export default {
   components: {
     MakeUpItem,
     CartModal,
+    GlobalSpinner,
   },
   data() {
     return {

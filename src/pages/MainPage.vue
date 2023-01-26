@@ -24,12 +24,19 @@
         <div class="title-photo">news</div>
       </div>
     </router-link>
+    <GlobalSpinner/>
   </div>
 </template>
 
 <script>
+import GlobalSpinner from '@/components/GlobalSpinner';
+
+
 export default {
   name: 'MainPage',
+  components: {
+    GlobalSpinner,
+  }
 };
 </script>
 

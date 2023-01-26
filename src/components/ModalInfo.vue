@@ -4,8 +4,8 @@
     centered
     ok-only
     no-close-on-backdrop
-    modal-class="modal-test"
-    content-class="modal-content-test"
+    modal-class="modal-info"
+    content-class="modal-content-info"
     style="background-color: brown"
   >
     {{ message }}!
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .modal-test {
+::v-deep .modal-info {
   background-color: rgba(0, 0, 0, 0.5);
   .modal-dialog {
     max-width: 33%;
