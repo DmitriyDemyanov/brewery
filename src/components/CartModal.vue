@@ -242,7 +242,12 @@ export default {
     },
   },
   methods: {
-    ...mapActions('makeup', ['addToCart', 'fetchMakeupList', 'sendOrder']),
+    ...mapActions('makeup', [
+      'addToCart',
+      'fetchMakeupList',
+      'sendOrder',
+      'setInfoMessage',
+    ]),
 
     changeQuantity(operation) {
       if (operation === 'minus' && this.quantity > 1) {
@@ -277,10 +282,12 @@ export default {
       };
       console.log('payload', payload);
       const response = await this.sendOrder(payload);
-      console.log('Response: ',response);
-      if (response.Status === "OK") {
-        console.log("Success");
+      console.log('Response: ', response);
+      if (response.Status === 'OK') {
+        console.log('Success');
         // ToDo - 2 - show success modal message
+        this.setInfoMessage('pay confirmed');
+        this.$bvModal.show('info-modal');
         // ToDo - 3 - hide and clear cart and card info
       } else {
         // ToDo - 2 - show failed modal message

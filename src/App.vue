@@ -1,12 +1,20 @@
 <template>
   <BContainer>
     <router-view class="main-view"></router-view>
+    <ModalInfo :message="infoModalMessage" />
   </BContainer>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import ModalInfo from './components/ModalInfo.vue';
+
 export default {
   name: 'App',
+  components: { ModalInfo },
+  computed: {
+    ...mapGetters(['infoModalMessage']),
+  },
 };
 </script>
 
