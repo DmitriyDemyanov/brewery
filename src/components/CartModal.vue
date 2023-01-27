@@ -194,6 +194,7 @@ export default {
         expiration: '',
         cvv: '',
       },
+      cardInfoDefault: {},
     };
   },
   computed: {
@@ -243,7 +244,12 @@ export default {
   },
   methods: {
     ...mapActions(['setInfoMessage']),
-    ...mapActions('makeup', ['addToCart', 'fetchMakeupList', 'sendOrder']),
+    ...mapActions('makeup', [
+      'addToCart',
+      'fetchMakeupList',
+      'sendOrder',
+      'cleanOutCart',
+    ]),
 
     changeQuantity(operation) {
       if (operation === 'minus' && this.quantity > 1) {
@@ -287,8 +293,13 @@ export default {
         this.setInfoMessage('pay Success');
         this.$bvModal.show('info-modal');
 
+        this.cardInfo = Object.assign({}, this.cardInfoDefault); ///////////////////////////////////////////
+        this.cleanOutCart();
+
         // ToDo - 3 - hide and clear cart and card info
       } else {
+        this.setInfoMessage('failed');
+        this.$bvModal.show('info-modal');
         // ToDo - 2 - show failed modal message
       }
       // ToDo - 1 - stop global spinner

@@ -54,5 +54,8 @@ export default {
     const result = await sendRequestOnServer(payload);
     console.log(result);
     return result;
+  },
+  cleanOutCart({ commit }) {
+    commit('CLEAN_CART');
   }
 };

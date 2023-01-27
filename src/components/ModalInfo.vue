@@ -5,8 +5,7 @@
     ok-only
     no-close-on-backdrop
     modal-class="modal-info"
-    content-class="modal-content-info"
-    style="background-color: brown"
+    :content-class="{'modal-content-info': message === 'failed'}"
   >
     {{ message }}!
   </b-modal>
@@ -19,6 +18,10 @@ export default {
     message: {
       type: String,
       default: 'Hi!',
+    },
+    bg: {
+      type: String,
+      default: 'background-color: brown',
     },
   },
 };
@@ -33,6 +36,9 @@ export default {
     .modal-content {
       background-color: #4de1c1;
     }
+  }
+  .modal-content-info {
+    background-color: red !important;
   }
   .modal-body {
     padding: 50px 100px 50px 42px;
