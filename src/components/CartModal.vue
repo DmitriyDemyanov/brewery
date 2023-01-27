@@ -52,13 +52,13 @@
             >
               <div class="card-type">
                 <img src="@/assets/makeup/card-master.svg" alt="mastercard" />
-              </div>
-              <div :class="{ 'd-none': cardType !== 'master' }">
-                <img
-                  class="img-check-mark"
-                  src="@/assets/makeup/check-mark.svg"
-                  alt=""
-                />
+                <div :class="{ 'd-none': cardType !== 'master' }">
+                  <img
+                    class="img-check-mark"
+                    src="@/assets/makeup/check-mark.svg"
+                    alt=""
+                  />
+                </div>
               </div>
             </div>
 
@@ -68,13 +68,13 @@
             >
               <div class="card-type">
                 <img src="@/assets/makeup/card-visa.svg" alt="visa" />
-              </div>
-              <div :class="{ 'd-none': cardType !== 'visa' }">
-                <img
-                  class="img-check-mark"
-                  src="@/assets/makeup/check-mark.svg"
-                  alt=""
-                />
+                <div :class="{ 'd-none': cardType !== 'visa' }">
+                  <img
+                    class="img-check-mark"
+                    src="@/assets/makeup/check-mark.svg"
+                    alt=""
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -406,7 +406,7 @@ export default {
       width: 18px;
       height: 18px;
       right: 21px;
-      bottom: 32px;
+      bottom: 27px;
       & img {
         width: 100%;
         height: 100%;
