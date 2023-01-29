@@ -153,6 +153,7 @@
           <div
             class="checkout-btn d-flex justify-content-between align-items-center"
             :class="{ active: isCardInfoValid }"
+            disabled="disabled"
             @click="orderProducts"
           >
             <div class="total-btn">$ {{ cartTotal.toFixed(2) }}</div>
@@ -477,10 +478,11 @@ input[type='number']::-webkit-inner-spin-button {
   font-size: 16px;
   line-height: 24px;
   color: #fefcfc;
-  cursor: pointer;
 
   &.active {
     background: #4de1c1;
+    cursor: pointer;
+    
   }
 
   &-text {
