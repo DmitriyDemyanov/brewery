@@ -383,6 +383,8 @@ export default {
 }
 .wrapper-item {
   width: calc(60% - 29px);
+
+
   .product-list {
     height: 492px;
     overflow-y: auto;
@@ -410,34 +412,32 @@ export default {
   padding: 22px 18px 24px 18px;
   display: flex;
   flex-direction: column;
+  font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    color: #fefcfc;
+    font-size: 16px;
+
   // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
   .card-title {
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
     font-weight: 600;
     font-size: 22px;
     line-height: 33px;
-    color: #fefcfc;
+
   }
   .card-subtitle {
     margin-top: 2px;
     margin-bottom: 20px;
     // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
     font-family: 'Nunito', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
     line-height: 22px;
-    color: #fefcfc;
+
   }
   .card-description {
     // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 500;
     font-size: 14px;
     line-height: 21px;
-    color: #fefcfc;
+
   }
   .card-img {
     width: 75px;
@@ -505,8 +505,6 @@ export default {
   margin-bottom: 19px;
   // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
   font-family: 'Nunito', sans-serif;
-  font-style: normal;
-  font-weight: 500;
   font-size: 14px;
   line-height: 19px;
   color: #1e1e1e;
@@ -523,12 +521,8 @@ input[type='number']::-webkit-inner-spin-button {
   background: #ccc;
   border-radius: 12px;
   // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
-  font-family: 'Poppins', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
   line-height: 24px;
-  color: #fefcfc;
+
 
   &.active {
     background: #4de1c1;
