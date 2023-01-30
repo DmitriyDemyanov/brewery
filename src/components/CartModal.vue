@@ -87,14 +87,21 @@
               type="text"
               placeholder="Name"
               v-model="cardInfo.name"
+              aria-describedby="card-name"
+              :state="isNameValid"
             ></b-form-input>
+            <b-form-invalid-feedback id="card-name">
+              Enter at least 3 letters without digits
+            </b-form-invalid-feedback>
           </b-input-group>
 
           <div class="card-description">Card Number</div>
           <b-input-group class="mb-3">
             <b-form-input
+              trim
               placeholder="1111 2222 3333 4444"
               v-model="cardInfo.number"
+              :formatter="handleCardNumber"
             ></b-form-input>
           </b-input-group>
 
@@ -243,8 +250,9 @@ export default {
       return this.cartSubtotal + this.cardSipping + this.cartTaxes;
     },
     isCardInfoValid() {
+      // ToDo - It can be simplified. Return this expression and that's all. Please fix it.
       if (
-        this.cardInfo.name.length >= 3 &&
+        this.isNameValid &&
         this.cardInfo.number.length === 16 &&
         this.cardInfo.expiration &&
         this.cardInfo.cvv.length === 3
@@ -252,6 +260,10 @@ export default {
         return true;
       }
       return false;
+    },
+    isNameValid() {
+      // Length should more or equal 3 AND no digits allowed
+      return Boolean(this.cardInfo.name.length >= 3 && !this.cardInfo.name.match(/\d/));
     },
   },
   methods: {
@@ -276,7 +288,6 @@ export default {
         this.quantity++;
       }
     },
-
     onAddToCart() {
       const payload = Object.assign({}, this.product);
       payload.quantity = this.quantity;
@@ -286,7 +297,6 @@ export default {
       this.cardType = type;
     },
     async orderProducts() {
-      console.log('--->', this.$forms);
       // ToDo - 1 - start global spinner
       if (this.isCardInfoValid) {
         this.$bvModal.show('global-spinner');
@@ -323,6 +333,25 @@ export default {
         this.$bvModal.hide('global-spinner');
       }
     },
+    handleCardNumber(val) {
+      let res = "";
+      const value = val.replaceAll(" ", "");
+      // Validate if "val" contain only numbers
+      // AND
+      // Length 16 symbols and plus 3 spaces between it
+      if (!value.match(/\D/) && val.length <= 19) {
+        // Separate by 4-digits block
+        for (let i = 0; i < value.length; i = i + 4) {
+          if (i + 4 < value.length) {
+            res += `${value.slice(i, i + 4)} `;
+          } else {
+            res += value.slice(i);
+          }
+        }
+        return res;
+      }
+      return this.cardInfo.number;
+    }
   },
   async mounted() {
     if (!this.getAllProducts.length) {
@@ -381,8 +410,9 @@ export default {
   padding: 22px 18px 24px 18px;
   display: flex;
   flex-direction: column;
+  // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
   .card-title {
-    font-family: 'Poppins';
+    font-family: 'Poppins', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 22px;
@@ -392,7 +422,8 @@ export default {
   .card-subtitle {
     margin-top: 2px;
     margin-bottom: 20px;
-    font-family: 'Nunito';
+    // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
+    font-family: 'Nunito', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -400,7 +431,8 @@ export default {
     color: #fefcfc;
   }
   .card-description {
-    font-family: 'Poppins';
+    // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
+    font-family: 'Poppins', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
@@ -447,7 +479,8 @@ export default {
 }
 
 .cart-title {
-  font-family: 'Poppins';
+  // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
+  font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -470,7 +503,8 @@ export default {
 }
 .cart-description {
   margin-bottom: 19px;
-  font-family: 'Nunito';
+  // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
+  font-family: 'Nunito', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -488,7 +522,8 @@ input[type='number']::-webkit-inner-spin-button {
   padding: 15px 18px 15px 24px;
   background: #ccc;
   border-radius: 12px;
-  font-family: 'Poppins';
+  // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
+  font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
