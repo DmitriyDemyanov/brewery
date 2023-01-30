@@ -156,7 +156,7 @@ export default {
   },
   async mounted() {
     if (!this.getAllProducts.length) {
-      await this.fetchMakeupList();
+      //await this.fetchMakeupList();
     }
     this.product = this.getProductById(this.$route.params.id);
   },

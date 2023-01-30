@@ -20,12 +20,12 @@
           class="form-select"
           aria-label="Default select example"
         >
-          <option selected>All</option>
           <option
             class="text-option"
             v-for="(option, ind) in options"
             :value="option.value"
             :key="ind"
+            :disabled="option.value === null"
           >
             {{ option.text }}
           </option>
@@ -52,6 +52,7 @@
           :product="product"
           v-for="(product, index) in products"
           :key="index"
+          @open-coca-cola="onBottleOpen"
         />
       </div>
 
@@ -65,14 +66,14 @@
         ></b-pagination>
       </div>
     </div>
-    <GlobalSpinner/>
+    <GlobalSpinner />
   </div>
 </template>
 
 <script>
 import MakeUpItem from '@/components/MakeupItem';
 import CartModal from '@/components/CartModal';
-import GlobalSpinner from '@/components/GlobalSpinner.vue'
+import GlobalSpinner from '@/components/GlobalSpinner.vue';
 
 import { mapActions, mapGetters } from 'vuex';
 
@@ -85,20 +86,28 @@ export default {
   },
   data() {
     return {
-      selected: 'All',
+      selected: null,
       options: [
-        { text: 'Blush', value: 'A' },
-        { text: 'bronzer', value: 'B' },
-        { text: 'eyebrow', value: 'C' },
-        { text: 'eyeliner', value: 'D' },
-        { text: 'eyeshadow', value: 'E' },
-        { text: 'foundation', value: 'F' },
-        { text: 'lip_liner', value: 'G' },
-        { text: 'lipstick', value: 'H' },
-        { text: 'mascara', value: 'I' },
-        { text: 'nail_polish', value: 'J' },
+        { text: 'select type', value: null },
+        { text: 'blush', value: 'blush' },
+        { text: 'bronzer', value: 'bronzer' },
+        { text: 'eyebrow', value: 'eyebrow' },
+        { text: 'eyeliner', value: 'eyeliner' },
+        { text: 'eyeshadow', value: 'eyeshadow' },
+        { text: 'foundation', value: 'foundation' },
+        { text: 'lip liner', value: 'lip_liner' },
+        { text: 'lipstick', value: 'lipstick' },
+        { text: 'mascara', value: 'mascara' },
+        { text: 'nail polish', value: 'nail_polish' },
+        { text: 'all products', value: '' },
       ],
     };
+  },
+  watch: {
+    selected() {
+      this.changeSelectedType(this.selected);
+      console.log('Selected', this.selected);
+    },
   },
   computed: {
     ...mapGetters('makeup', [
@@ -123,17 +132,30 @@ export default {
     },
   },
   methods: {
-    ...mapActions('makeup', ['fetchMakeupList', 'changePage']),
+    ...mapActions('makeup', [
+      'fetchMakeupList',
+      'changePage',
+      'changeSelectedType',
+    ]),
     onSwitchPage(val) {
       console.log('On Switch Page', val);
     },
     openCart() {
       this.$bvModal.show('cart-modal');
     },
+    onBottleOpen(text) {
+      console.log('onBottleOpen', text);
+    },
+    onAlcoTrip() {
+      console.log('Woohooo!!!');
+    },
+    selectedProduct(value) {
+      console.log('value:', value);
+    },
   },
   mounted() {
     if (!this.getAllProducts.length) {
-      this.fetchMakeupList();
+      // this.fetchMakeupList();
     }
   },
 };

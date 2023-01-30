@@ -12,7 +12,7 @@
           {{ product.description }}
         </p>
       </div>
-      <ul class="list-group list-group-flush">
+      <ul class="list-group list-group-flush" @click="onListClick">
         <li class="list-group-item">{{ product.name }}</li>
         <li class="list-group-item">{{ category }}</li>
         <li class="list-group-item">{{ price }}</li>
@@ -52,6 +52,11 @@ export default {
     onSelectProduct() {
       console.log(this.product.id);
       this.$router.push(`/makeup/${this.product.id}`);
+    },
+    onListClick() {
+      console.log('onListClick');
+      this.$emit('open-coca-cola', this.product.name);
+      
     },
   },
 };
