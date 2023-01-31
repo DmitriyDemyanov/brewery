@@ -6,20 +6,22 @@
       modal-class="modal-test"
       content-class="modal-content-test"
     >
-      <div class="wrapper-cart d-flex justify-content-between">
+      <div
+        @keyup.enter="orderProducts"
+        class="wrapper-cart d-flex justify-content-between"
+      >
         <div class="wrapper-item">
           <span
             class="item-back-product d-flex align-items-center cursor-pointer"
+            @click="onContinueShopping"
           >
             <img
               class="arrow-left"
               src="@/assets/makeup/arrow-left.svg"
               alt="icon"
-              @click="closeModal()"
             />
-            <span class="cart-title" @click="closeModal()"
-              >Continue Shopping</span
-            >
+            <!-- this.$router.push({name: "makeup"}) -->
+            <span class="cart-title">Continue Shopping</span>
           </span>
 
           <div class="cart-bar"></div>
@@ -85,15 +87,21 @@
               type="text"
               placeholder="Name"
               v-model="cardInfo.name"
+              aria-describedby="card-name"
+              :state="isNameValid"
             ></b-form-input>
+            <b-form-invalid-feedback id="card-name">
+              Enter at least 3 letters without digits
+            </b-form-invalid-feedback>
           </b-input-group>
 
           <div class="card-description">Card Number</div>
           <b-input-group class="mb-3">
             <b-form-input
-              type="number"
+              trim
               placeholder="1111 2222 3333 4444"
               v-model="cardInfo.number"
+              :formatter="handleCardNumber"
             ></b-form-input>
           </b-input-group>
 
@@ -133,7 +141,7 @@
           <div class="wrapper-price d-flex justify-content-between mb-1">
             <div class="card-name-item card-description">Shipping</div>
             <div class="card-price card-description">
-              $ {{ shipping.toFixed(2) }}
+              $ {{ cardSipping.toFixed(2) }}
             </div>
           </div>
 
@@ -153,7 +161,6 @@
           <div
             class="checkout-btn d-flex justify-content-between align-items-center"
             :class="{ active: isCardInfoValid }"
-            disabled="disabled"
             @click="orderProducts"
           >
             <div class="total-btn">$ {{ cartTotal.toFixed(2) }}</div>
@@ -195,7 +202,12 @@ export default {
         expiration: '',
         cvv: '',
       },
-      cardInfoDefault: {},
+      cardInfoDefault: {
+        name: '',
+        number: '',
+        expiration: '',
+        cvv: '',
+      },
     };
   },
   computed: {
@@ -227,20 +239,31 @@ export default {
     cartTaxes() {
       return (this.cartSubtotal * this.taxes) / 100;
     },
+    cardSipping() {
+      if (this.cartSubtotal === 0) {
+        return 0;
+      } else {
+        return this.shipping;
+      }
+    },
     cartTotal() {
-      return this.cartSubtotal + this.shipping + this.cartTaxes;
+      return this.cartSubtotal + this.cardSipping + this.cartTaxes;
     },
     isCardInfoValid() {
-      return true;
-      /*if (
-        this.cardInfo.name.length >= 3 &&
+      // ToDo - It can be simplified. Return this expression and that's all. Please fix it.
+      if (
+        this.isNameValid &&
         this.cardInfo.number.length === 16 &&
         this.cardInfo.expiration &&
         this.cardInfo.cvv.length === 3
       ) {
         return true;
       }
-      return false;*/
+      return false;
+    },
+    isNameValid() {
+      // Length should more or equal 3 AND no digits allowed
+      return Boolean(this.cardInfo.name.length >= 3 && !this.cardInfo.name.match(/\d/));
     },
   },
   methods: {
@@ -251,7 +274,12 @@ export default {
       'sendOrder',
       'cleanOutCart',
     ]),
-
+    onContinueShopping() {
+      if (this.$route.path !== '/makeup') {
+        this.$router.push({ name: 'makeup' });
+      }
+      this.$bvModal.hide('cart-modal');
+    },
     changeQuantity(operation) {
       if (operation === 'minus' && this.quantity > 1) {
         this.quantity--;
@@ -259,9 +287,6 @@ export default {
       if (operation === 'plus' && this.quantity < 4) {
         this.quantity++;
       }
-    },
-    closeModal() {
-      this.$bvModal.hide('cart-modal');
     },
     onAddToCart() {
       const payload = Object.assign({}, this.product);
@@ -273,44 +298,64 @@ export default {
     },
     async orderProducts() {
       // ToDo - 1 - start global spinner
+      if (this.isCardInfoValid) {
+        this.$bvModal.show('global-spinner');
+        const payload = {
+          card: { ...this.cardInfo },
+          products: this.getCart.map((product) => {
+            console.log('P in C: ', product);
+            return {
+              id: product.id,
+              quantity: product.quantity,
+            };
+          }),
+        };
+        console.log('payload', payload);
+        const response = await this.sendOrder(payload);
+        console.log('Response: ', response);
+        if (response.Status === 'OK') {
+          console.log('Success');
+          // ToDo - 2 - show success modal message
+          this.setInfoMessage('pay Success');
+          this.$bvModal.show('info-modal');
 
-      this.$bvModal.show('global-spinner');
-      const payload = {
-        card: { ...this.cardInfo },
-        products: this.getCart.map((product) => {
-          console.log('P in C: ', product);
-          return {
-            id: product.id,
-            quantity: product.quantity,
-          };
-        }),
-      };
-      console.log('payload', payload);
-      const response = await this.sendOrder(payload);
-      console.log('Response: ', response);
-      if (response.Status === 'OK') {
-        console.log('Success');
-        // ToDo - 2 - show success modal message
-        this.setInfoMessage('pay Success');
-        this.$bvModal.show('info-modal');
+          this.cardInfo = Object.assign({}, this.cardInfoDefault); ///////////////////////////////////////////
+          this.cleanOutCart();
 
-        this.cardInfo = Object.assign({}, this.cardInfoDefault); ///////////////////////////////////////////
-        this.cleanOutCart();
+          // ToDo - 3 - hide and clear cart and card info
+        } else {
+          this.setInfoMessage('failed');
+          this.$bvModal.show('info-modal');
+          // ToDo - 2 - show failed modal message
+        }
+        // ToDo - 1 - stop global spinner
 
-        // ToDo - 3 - hide and clear cart and card info
-      } else {
-        this.setInfoMessage('failed');
-        this.$bvModal.show('info-modal');
-        // ToDo - 2 - show failed modal message
+        this.$bvModal.hide('global-spinner');
       }
-      // ToDo - 1 - stop global spinner
-
-      this.$bvModal.hide('global-spinner');
     },
+    handleCardNumber(val) {
+      let res = "";
+      const value = val.replaceAll(" ", "");
+      // Validate if "val" contain only numbers
+      // AND
+      // Length 16 symbols and plus 3 spaces between it
+      if (!value.match(/\D/) && val.length <= 19) {
+        // Separate by 4-digits block
+        for (let i = 0; i < value.length; i = i + 4) {
+          if (i + 4 < value.length) {
+            res += `${value.slice(i, i + 4)} `;
+          } else {
+            res += value.slice(i);
+          }
+        }
+        return res;
+      }
+      return this.cardInfo.number;
+    }
   },
   async mounted() {
     if (!this.getAllProducts.length) {
-      await this.fetchMakeupList();
+      //await this.fetchMakeupList();
     }
     this.product = this.getProductById(this.$route.params.id);
   },
@@ -338,6 +383,8 @@ export default {
 }
 .wrapper-item {
   width: calc(60% - 29px);
+
+
   .product-list {
     height: 492px;
     overflow-y: auto;
@@ -365,31 +412,32 @@ export default {
   padding: 22px 18px 24px 18px;
   display: flex;
   flex-direction: column;
-  .card-title {
-    font-family: 'Poppins';
+  font-family: 'Poppins', sans-serif;
     font-style: normal;
+    font-weight: 500;
+    color: #fefcfc;
+    font-size: 16px;
+
+  // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
+  .card-title {
     font-weight: 600;
     font-size: 22px;
     line-height: 33px;
-    color: #fefcfc;
+
   }
   .card-subtitle {
     margin-top: 2px;
     margin-bottom: 20px;
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
+    // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
+    font-family: 'Nunito', sans-serif;
     line-height: 22px;
-    color: #fefcfc;
+
   }
   .card-description {
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 500;
+    // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
     font-size: 14px;
     line-height: 21px;
-    color: #fefcfc;
+
   }
   .card-img {
     width: 75px;
@@ -431,7 +479,8 @@ export default {
 }
 
 .cart-title {
-  font-family: 'Poppins';
+  // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
+  font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -454,9 +503,8 @@ export default {
 }
 .cart-description {
   margin-bottom: 19px;
-  font-family: 'Nunito';
-  font-style: normal;
-  font-weight: 500;
+  // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
+  font-family: 'Nunito', sans-serif;
   font-size: 14px;
   line-height: 19px;
   color: #1e1e1e;
@@ -472,17 +520,13 @@ input[type='number']::-webkit-inner-spin-button {
   padding: 15px 18px 15px 24px;
   background: #ccc;
   border-radius: 12px;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
+  // ToDo - BUG - Not necessary to set font-family for every element, we can implement it in general settings. Please fix it.
   line-height: 24px;
-  color: #fefcfc;
+
 
   &.active {
     background: #4de1c1;
     cursor: pointer;
-    
   }
 
   &-text {

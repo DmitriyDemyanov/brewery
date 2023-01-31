@@ -1,12 +1,15 @@
-import { sendRequestOnServer } from "@/server/makeup";
+import { sendRequestOnServer } from '@/server/makeup';
 
 const API_URL = 'http://makeup-api.herokuapp.com/api/v1/products.json';
 
-
-
 export default {
   async fetchMakeupList(ctx) {
-    const makeup = await fetch(API_URL)
+    let url = API_URL;
+    if (ctx.state.selectedType) {
+      url += `?product_type=${ctx.state.selectedType}`;
+    }
+
+    const makeup = await fetch(url)
       .then((response) => {
         console.log('R: ', response);
         return response.json();
@@ -57,5 +60,9 @@ export default {
   },
   cleanOutCart({ commit }) {
     commit('CLEAN_CART');
-  }
+  },
+  changeSelectedType({ commit, dispatch }, payload) {
+    commit('SET_TYPE', payload);
+    dispatch('fetchMakeupList');
+  },
 };

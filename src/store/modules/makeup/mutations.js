@@ -1,8 +1,8 @@
 function saveToLocalStorage(name, data) {
   localStorage.setItem(name, JSON.stringify(data));
 }
-function cleanLocalStorage() {
-  localStorage.clear();
+function cleanLocalStorage(name) {
+  localStorage.removeItem(name);
 }
 
 export default {
@@ -29,6 +29,9 @@ export default {
   },
   CLEAN_CART(state) {
     state.cart = [];
-    cleanLocalStorage();
+    cleanLocalStorage('makeupCart');
   },
+  SET_TYPE(state, payload) {
+    state.selectedType = payload;
+  }
 };
